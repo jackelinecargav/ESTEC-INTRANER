@@ -1,0 +1,533 @@
+<template>
+    <div class="content-wrapper">
+         <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-10">
+            <div class="row">
+              <h4><b> Bandeja de Procedimientos</b></h4>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="content">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header mb-0">
+              <!-- <div class="row col-12"> -->
+                <div class="form-group col-md-12" style="padding-left: 0px; padding-right: 0px; !important;">
+                  <div class="row col-12" style="padding-right: 0px; !important;">
+                    <div class="row col-sm-5" style="padding-left: 0px; margin-right: 10px; !important;">
+                      <label for="exampleInputPassword1" class="col-sm-4 col-form-label" style="font-size: 15px; padding-roght:0px; ">Unidad Organica: </label>                    
+                      <div class="form-group col-8">
+                          <select id="idAreaBucar" @change="ObtenerTipoTramite('')" :disabled=isDisabledNega class="form-control" v-model="areaBuscar">
+                          <option value="0">-Seleccionar-</option>
+                          <option v-for="areas of listaAreas" :key=areas.idArea :value="areas.idArea" >{{areas.nombreArea}}</option>
+                          </select>
+                      </div>
+                    </div>
+                
+                    <div class="row col-sm-7" style="padding-left:0px !important;">
+                      <label for="exampleInputPassword1" class="col-sm-2 col-form-label" style="padding-right: 0px; !important;font-size:15px">Procedimiento: </label>   
+                      <!-- <div class="row col-12"> -->
+                        <div class="col-sm-9" style="padding-left: 0px;"> 
+                                <model-select :options="mapListaTipoTramite" v-model="itemTramite"
+                                placeholder="Seleccione un Servicio" >
+                                </model-select>
+                        </div>
+                        <button type="button" @click="itemTramite = 0" class="col-sm-1 btn btn-outline-secondary">
+                          <img src="../../images/icon_eraser.png" alt="" srcset="" width="25" height="25">   
+                        </button>   
+                      <!-- </div> -->
+                    </div>
+                  </div>
+                </div>               
+            <!-- </div> -->
+            <!--  -->
+            <div class="row">
+                <div class="form-group col-sm-4" style="padding-right: 0px; !important">
+                        <div class="row">
+                         <label for="exampleInputPassword1" class="col-sm-5 col-form-label" style="padding-right: 0px; !important;font-size:15px">Cod. TUPA/TUSNE: </label>
+                        <div class="col-sm-6" style="padding-left: 0px; !important;top:2px">
+                            <input type="text" class="form-control" placeholder="Ingrese Codigo" v-model="numeroDocumentoModelo">
+                        </div> 
+                        </div>
+                </div>
+                <div class="form-group col-sm-2" style="padding-left: 0px; padding-right: 0px;">
+                  <div class="row">
+                    <label class="col-sm-3 col-form-label" style="padding-left: 0px;font-size:15px; padding-right: 0px;">Tipo:&nbsp;</label>
+                    <div class="col-sm-6 text-center" >
+                      <select class="text-center!important form-control col-sm-12 col-md-11 col-lg-12 " style="padding:5px; text-center" v-model="tipoTupaTusne">
+                                <option value="0">Todos</option>
+                                <option value="1">TUSNE</option>
+                                <option value="2">TUPA</option>
+                                <option value="3">OTROS</option>
+                      </select>
+                    </div>
+                  </div>
+                </div> 
+                <div class="form-group col-sm-2" style="padding-left: 0px; padding-right: 0px;">
+                  <div class="row">
+                    <label class="col-sm-5 col-form-label" style="padding-left: 0px;font-size:15px; padding-right: 0px;">Gratuito: &nbsp;</label>
+                    <div class="col-sm-6 text-center" >
+                      <select class="text-center!important form-control col-sm-12 col-md-11 col-lg-12 " style="padding:5px; text-center" v-model="flagPagoBusqueda">
+                                <option value="0">Todos</option>
+                                <option value="1">Si</option>
+                                <option value="2">No</option>
+                      </select>
+                    </div>
+                  </div>
+                </div> 
+                <div class="form-group col-sm-2" >
+                    <div class="row">
+                    <div class="col-sm-2"/>
+                    <label for="exampleInputPassword1" class="col-sm-4 col-form-label" style="padding-right: 0px; !important;font-size:15px">Estado</label>
+                    <div class="col-sm-5" style="padding-right: 0px; !important">
+                      <select class="form-control col-sm-12"  style="padding:5px;position:relative;" v-model="estadoReg">
+                                <option value="1">ACTIVO</option>
+                                <option value="2">INACTIVO</option>
+                            </select>
+                    </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                  <button type="button" @click="getProcedxNumero()" class="btn btn-primary">Buscar</button>   
+                </div>
+                <div class="col-sm-1" >
+                  <button type="button"  @click="Registro(0)" class="btn btn-outline-primary" >Nuevo</button>   
+                </div>
+            </div>
+            </div>
+          </div>           
+            <div class="card-body">
+              <table id="example2" class="table table-bordered table-hover table-sm mb-0">
+                <thead class="btn-primary">
+                <tr >
+                  <th width="2%">ID</th>
+                  <th width="3%">Código</th>
+                  <th width="3%" class="text-center">Numero</th>
+                  <th width="8%">Procedimiento</th>
+                  <th class="text-center" width="2%">Gratuito </th>
+                  <th width="2%" class="text-center">BL</th>              
+                  <th width="2%" class="text-center">TT</th>              
+                  <th width="2%" class="text-center">PR</th>              
+                  <th width="2%" class="text-center">TC</th>              
+                  <th width="2%" class="text-center">NR</th>               
+                </tr>
+                </thead>
+               <tbody>
+                <tr v-for="proced of procedJson" :key=proced.idTipoTramite v-on:dblclick="Editar(proced.idTipoTramite)">
+                  <td>{{proced.idTipoTramite}}</td>
+                  <td v-if="proced.codSubConcepto!=0">{{proced.codigo}}-{{proced.codSubConcepto}}</td>
+                  <td v-if="proced.codSubConcepto==0" >{{proced.codigo}}</td>
+                  <td class="text-center">{{proced.tTramite.numero}}</td>
+                  <td>{{proced.nombre}}</td>
+                  <td class="text-center" v-if="proced.flagRequierePago==true">N</td>
+                  <td class="text-center" v-else-if="proced.flagRequierePago==false">S</td>
+                  <td class="text-center" v-if="(longitud(proced.baseLegal)>=8)">S</td>                      
+                  <td class="text-center" v-if="(longitud(proced.baseLegal)<8)">N</td>                       
+                  <td class="text-center" v-if="(longitud(proced.tupaTusneDescripcion)>=8)">S</td>                       
+                  <td class="text-center" v-if="(longitud(proced.tupaTusneDescripcion)<8)">N</td>                       
+                  <td class="text-center" v-if="(longitud(proced.preguntasFrecuentes)>=8)">S</td>                       
+                  <td class="text-center" v-if="(longitud(proced.preguntasFrecuentes)<8)">N</td>                                          
+                  <td class="text-center" v-if="(longitud(proced.tenerEnCuenta)>=8)">S</td>                       
+                  <td class="text-center" v-if="(longitud(proced.tenerEnCuenta)<8)">N</td>
+                  <td class="text-center"><label>{{proced.reqTramite.cantidadRequisitos}}</label></td>                       
+                </tr>
+               </tbody>
+                <tfoot>
+                <tr>
+                  
+                </tr>
+                </tfoot>
+              </table>
+              
+              <nav aria-label="...">
+                <ul class="pagination">
+                  <li class="page-item " @click="CambiarPagina(indice-1)">
+                    <span class="page-link">Anterior</span>
+                  </li>
+                  <li v-for="pagina of listaPaginas" :key=pagina.id @click="CambiarPagina(pagina)" class="page-item" :class="{'active':pagina==indice}">
+                    <a class="page-link" >{{pagina | pintaPuntos}}</a>
+                  </li>
+                  <li class="page-item" @click="CambiarPagina(indice+1)">
+                    <a class="page-link" >Siguiente</a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
+    </section>
+    </div>
+</template>
+
+<script>
+import axios from 'axios';
+import Datepicker from 'vuejs-datepicker';
+import Constantes from '../../store/constantes.js';
+import VModal from 'vue-js-modal'
+import { ModelSelect } from 'vue-search-select'
+import moment from "moment";
+import Axios from 'axios';
+export default {
+  name:'BandejaProcedimientos',
+  data(){
+    return{
+      isDisabledNega: true,
+      areaBuscar: localStorage.getItem('codUnidadLogueado'),
+      listaAreas: null,
+      listaDePermiso: null,
+      permiso: false,
+      // Filtros HEADER
+      tipoTupaTusne: 0,
+      flagPagoBusqueda: 0,
+
+
+      certificadosJson:null,
+      procedJson:null,
+      citasTJson:null,
+      listaParametrosAux:null,
+      listaEstado:null,
+      listaTipoDocumento:null,
+      idTipodocumento:0,
+      idEstado:0,
+      idProcedimiento:0,
+      numeroDocumentoModelo:'',
+      numeroExpedienteModelo:'',
+      anioExpedienteModelo:'',
+      manzanaModelo:'',
+      loteModelo:'',
+      indice:1,
+      limite:50,
+      estadoReg:1,
+      listaPaginas:null,
+      cantidadPaginasBandeja:0,
+      date: new Date,
+      codigoCita:0,
+      showModal: false,
+      showModalD: false,
+      showInter: false,
+      regBool: false,
+      fechaSelEnvio: new Date,
+      fechaModal:null,
+      idCitaModal:0,
+      valText:false,
+      horaModal:'',
+      motivoModal:'',
+      dniModal:'',
+      nombreModal:'',
+      correoModal:'',
+      descripcionModal:'',
+      descripcionModalD:'',
+      responsableModalD:'',
+      responsableModal:'',
+      minAten:'',
+      horaAten:'',
+      fecAten:'',
+      areaSesion:localStorage.getItem('desUnidadLogueado'),
+      usuSesion:localStorage.getItem('cuenta'),
+      uniSesion:localStorage.getItem('codUnidadLogueado'),
+      mapListaTipoTramite:[],
+      itemTramite:0,
+      appointment: {
+            appointmet_date: new Date,
+        }
+    }
+  },
+  created(){
+
+  },
+  mounted(){
+    if(localStorage.getItem('logueado')=='true'){
+      console.log(localStorage.getItem('idUsuarioLogueado'));  
+      console.log('está logueado');
+      console.log(localStorage.getItem('codUnidadLogueado') );   
+      // this.verificarPermiso(0,1)
+      this.verificarPermiso(1,localStorage.getItem('idUsuarioLogueado'))
+      console.log('RESULTADO DE PERMISO =>>'+ this.permiso);
+      
+      }, 1000);
+    }else{
+      this.$router.push('/auth/login/');
+    }
+    
+  },
+  components: {
+    Datepicker,
+    ModelSelect
+  },
+  methods:{ 
+    verificarPermiso(idOpcion,idUsuario){
+      // idOpcion = 0
+      var url= Constantes.rutaTramite+"rol/obteneropcion/"+0+"/0/"+idUsuario;
+      console.log(url)
+      axios.get(url)
+        .then(response=>{
+          this.listaDePermiso=response.data.data;
+          for(var listaDePermiso of this.listaDePermiso){
+        for(var listaPermiso of listaDePermiso.listaPermiso){
+          console.log("Accion  modulo")
+          // for(var modulo of listaPermiso.modulo){
+            var opcion = listaPermiso.modulo.idOpcion;
+            console.log("Accion numero")
+            console.log(opcion)
+            console.log(idOpcion)
+            if(opcion == idOpcion){
+              this.permiso =true;
+              console.log("BOOLEAN")
+              console.log(this.permiso)
+              break;
+            } 
+        }
+      }
+      if(this.permiso){
+          this.ObtenerTipoTramite('');
+          this.getProcedxNumero();
+          this.getAreas();
+      }else {
+        this.$swal({
+                  customClass: {
+                    container: 'my-swal'
+                  },
+                  icon: 'error',
+                  title: 'AVISO',
+                  text: 'No tienes permiso para esta opción.'                  
+                });
+        this.$router.push('/components/procedimientos/consulta');
+      }
+      console.log(this.listaDePermiso)
+      console.log("LISTA DE PERMISO")
+          })
+        .catch(e=>console.log(e))
+      console.log("AQUI FINALIZA LA FUNCION CON UN =>>" + this.permiso)
+    }, 
+    getAreas(){
+        console.log('===============================================AQUI SE MUESTRA LA DATA===============================================');
+         var url = Constantes.rutaTramite+"tramite-area/1"
+        //var url = Constantes.rutaTramite+"getAreas"
+        console.log(url)
+        axios.get(url).then(response=>{
+            console.log('examinando listaTipoAtencion');
+             this.listaAreas=response.data;
+            //this.listaAreas=response.data.data;
+            if((localStorage.getItem('idUsuarioLogueado') == 36416) ){
+              this.isDisabledNega = false;
+            }
+            console.log(this.listaAreas);
+        }).catch(e=>console.log(e))
+    },
+    ObtenerTipoTramite(nombre){
+      console.log(Constantes.rutaTramite+'tipotramite/'+this.reemplazaVacio(nombre));
+      axios.get(Constantes.rutaTramite+'tipotramite/'+this.reemplazaVacio(nombre)+'/'+this.areaBuscar)
+                    .then(response=>{
+                      this.listaTipoTramite = null;
+                      this.listaTipoTramite=response.data.data;
+                      console.log('pintando tipotramite')
+                      console.log(response.data.data);
+                      console.log(this.listaTipoTramite);
+                      console.log(this.listaTipoTramite[0].nombre);
+                      var i=0;
+
+                      this.mapListaTipoTramite = [];
+
+                      while(i<this.listaTipoTramite.length){
+                            var asunto={};
+
+                        console.log("LISTA DENTRO DE WHILE ===========");
+                            asunto.value=this.listaTipoTramite[i].idTipoTramite;
+                            asunto.text=this.listaTipoTramite[i].nombre;
+                            this.mapListaTipoTramite.push(asunto);
+                            i++;
+                        }
+
+                        console.log("LISTA MAPA ===========");
+                        console.log(this.mapListaTipoTramite);
+                  })
+                  .catch(e=>console.log(e))
+    },
+    CambiarPagina(pagina){
+      if(pagina>0){
+        this.indice=pagina;
+        this.getCitas();
+      }
+    },   
+    reemplazaVacio(cadena,reemplazo){
+      return cadena==''?'-':cadena;
+    },
+    reemplazaVacioEntero(cadena,reemplazo){
+      return cadena==''?'0':cadena;
+    },
+    getProcedimientos(){    
+      var url=Constantes.rutaTramite+'tipotramite/procedimiento/'+this.areaBuscar;
+      console.log(url);              
+                axios.get(url)
+                    .then(response=>{
+                    console.log(response);
+                    this.procedJson=response.data.data;
+                    var objeto=this.procedJson.data;
+                    console.log('cantidad de certificados'+ this.procedJson.length);
+                    this.listaPaginas=null
+                    this.listaPaginas=[1];
+                    var cantidadPaginas=0;
+                    this.cantidadPaginasBandeja=0;
+                    console.log('cantidad de páginas'+ cantidadPaginas);
+                    if(this.procedJson.length>0){
+                      console.log(this.procedJson[0].totalBandeja);
+                      cantidadPaginas=Math.ceil(this.procedJson[0].totalBandeja/this.limite);
+                      this.cantidadPaginasBandeja=cantidadPaginas;
+                      console.log('cantidad de páginas'+ cantidadPaginas);
+                       var nuevaPagina=2;
+                       var primeraPaginaAuxiliar=0;
+                       var segundaPaginaAuxiliar=0;
+                       if(this.cantidadPaginasBandeja<=10){
+                          while(nuevaPagina<=cantidadPaginas) {
+                              this.listaPaginas.push(nuevaPagina);
+                              nuevaPagina++
+                              console.log('Ingreso a pushear listaPaginas' + nuevaPagina);
+                              console.log(this.listaPaginas);
+                          }
+                       }else{
+                          while(nuevaPagina<=cantidadPaginas) {
+                              console.log('pintando indice'+this.indice);
+                              if(nuevaPagina<=3){
+                                this.listaPaginas.push(nuevaPagina);
+                                console.log('Ingreso a pushear listaPaginas' + nuevaPagina);
+                                console.log(this.listaPaginas);
+                              }else{
+                                if((nuevaPagina>this.indice-3 && nuevaPagina<this.indice+3)||nuevaPagina>=this.cantidadPaginasBandeja-3){
+                                  this.listaPaginas.push(nuevaPagina);
+                                  console.log('Ingreso a pushear listaPaginas' + nuevaPagina);
+                                  console.log(this.listaPaginas);
+                                }else{
+                                  if(primeraPaginaAuxiliar==0 && nuevaPagina<=this.indice-3){
+                                    this.listaPaginas.push(-1);
+                                    primeraPaginaAuxiliar=1;
+                                  }
+                                  if(segundaPaginaAuxiliar==0 && nuevaPagina>=this.indice+3){
+                                    this.listaPaginas.push(-1);
+                                    segundaPaginaAuxiliar=1;
+                                  }
+                                }
+                              }
+                              
+                              nuevaPagina++;
+                          }
+                       }
+                       
+                    }
+                    console.log('Pintando listaPaginas');
+                    console.log(this.listaPaginas);
+                    console.log('procedJson'+ procedJson);
+                  })
+                  .catch(e=>console.log(e))
+                  },
+    getProcedxNumero(){  
+      console.log("Muestera chekbox")
+      console.log(this.flagPagoBusqueda)  
+      var url=Constantes.rutaTramite+'tipotramite/procedimiento-codigo/'+this.areaBuscar+'/'+this.reemplazaVacio(this.numeroDocumentoModelo)+
+      '/'+this.estadoReg+'/'+this.itemTramite+'/'+this.flagPagoBusqueda+'/'+this.tipoTupaTusne;
+      console.log(url);                 
+        axios.get(url)
+          .then(response=>{
+          console.log(response);
+          this.procedJson=response.data.data;
+          var objeto=this.procedJson.data;
+          console.log('cantidad de certificados'+ this.procedJson.length);
+          this.listaPaginas=null
+          this.listaPaginas=[1];
+          var cantidadPaginas=0;
+          this.cantidadPaginasBandeja=0;
+          console.log('cantidad de páginas'+ cantidadPaginas);
+          if(this.procedJson.length>0){
+            console.log(this.procedJson[0].totalBandeja);
+            cantidadPaginas=Math.ceil(this.procedJson[0].totalBandeja/this.limite);
+            this.cantidadPaginasBandeja=cantidadPaginas;
+            console.log('cantidad de páginas'+ cantidadPaginas);
+              var nuevaPagina=2;
+              var primeraPaginaAuxiliar=0;
+              var segundaPaginaAuxiliar=0;
+              if(this.cantidadPaginasBandeja<=10){
+                while(nuevaPagina<=cantidadPaginas) {
+                    this.listaPaginas.push(nuevaPagina);
+                    nuevaPagina++
+                    console.log('Ingreso a pushear listaPaginas' + nuevaPagina);
+                    console.log(this.listaPaginas);
+                }
+              }else{
+                while(nuevaPagina<=cantidadPaginas) {
+                    console.log('pintando indice'+this.indice);
+                    if(nuevaPagina<=3){
+                      this.listaPaginas.push(nuevaPagina);
+                      console.log('Ingreso a pushear listaPaginas' + nuevaPagina);
+                      console.log(this.listaPaginas);
+                    }else{
+                      if((nuevaPagina>this.indice-3 && nuevaPagina<this.indice+3)||nuevaPagina>=this.cantidadPaginasBandeja-3){
+                        this.listaPaginas.push(nuevaPagina);
+                        console.log('Ingreso a pushear listaPaginas' + nuevaPagina);
+                        console.log(this.listaPaginas);
+                      }else{
+                        if(primeraPaginaAuxiliar==0 && nuevaPagina<=this.indice-3){
+                          this.listaPaginas.push(-1);
+                          primeraPaginaAuxiliar=1;
+                        }
+                        if(segundaPaginaAuxiliar==0 && nuevaPagina>=this.indice+3){
+                          this.listaPaginas.push(-1);
+                          segundaPaginaAuxiliar=1;
+                        }
+                      }
+                    }
+                    
+                    nuevaPagina++;
+                }
+              }
+              
+          }
+          console.log('Pintando listaPaginas');
+          console.log(this.listaPaginas);
+        })
+        .catch(e=>console.log(e))   
+    },  
+    Registro(){
+        // this.$router.go({path:"/components/procedimientos/registrarprocedimiento"})
+        let routeData = this.$router.resolve({path:'/components/procedimientos/registrarprocedimiento/'+this.areaBuscar});
+        window.open(routeData.href,'_blank');
+    }, 
+    Editar(idProcedimiento){
+                // this.$router.push('/components/procedimientos/editarprocedimiento/'+idProcedimiento)   
+                let routeData = this.$router.resolve({path:'/components/procedimientos/editarprocedimiento/'+idProcedimiento+"/"+this.areaBuscar});
+                window.open(routeData.href,'_blank');              
+    },       
+    PadLeft(value, length) {
+            return (value.toString().length < length) ? PadLeft("0" + value, length) : value;
+    },
+    longitud(palabra){
+      if(palabra==null){
+        var numero=0
+      }else if(palabra==="null"){
+        var numero=0
+      }else {
+        var numero = palabra.length
+      }
+      // console.log(numero)
+      return numero
+    },   
+
+  },
+  filters:{
+    pintaPuntos(pagina){
+      if(pagina==-1){
+        return '...';
+      }
+      else{
+        return pagina;
+      }
+    }
+  }
+}
+
+</script>
+
+
