@@ -1,12 +1,11 @@
 <template>
-  <div class="main-content body-full positionRight">
-    <div
-      class="content contentTG left-sidebar-toggle contenedor-opciones"
-      style="min-height: 592px; margin-left: 70px"
-    >
+ <div class="content-wrapper">
+    <div>
       <titulo-header>Registro de Comprobante</titulo-header><br />
-      <div class="body-registro" v-loading="loading">
-        <br />
+       <section class="content">
+      <el-row :gutter="10">
+        <div class="card menu">
+        <div id="miCuenta">
         <div>
           <el-row style="margin-top: 10px">
             <el-col :md="3">
@@ -321,8 +320,9 @@
           </div>
         </el-dialog>
       </div>
-
-      <div style="margin-right: 7%"><br /><br /><br /></div>
+        </div>
+      </el-row>
+       </section>
     </div>
   </div>
 </template>
