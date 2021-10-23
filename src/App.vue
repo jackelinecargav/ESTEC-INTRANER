@@ -41,17 +41,10 @@
       TituloAzul,
     },
     created() {
-      console.log('idusuariologueado'+ localStorage.getItem("idUsuarioLogueado"))
-      if (localStorage.getItem("idUsuarioLogueado")) {
-        this.idUser = localStorage.getItem("idUsuarioLogueado");
-        console.log('idusuaroilogueado2' + this.idUser)
         this.opcionesMenu();
-      }
+      
     },
     computed: {
-      name() {
-        return this.$route.name;
-      },
       list() {
         return this.$route.matched;
       },
@@ -65,38 +58,12 @@
         this.opcionesMenu();
       },
       opcionesMenu() {
-        var url = Constantes.rutaAccesos + "menu/obtenermenu/" + this.idUser;
-        //localStorage.getItem("idUsuarioLogueado");
-        axios
-          .get(url)
-          .then((response) => {
-            this.listaDePermiso = response.data.data;
-            var array = [];
-            for (var lista1 of this.listaDePermiso) {
-              var objeto = new Object();
-              objeto.name = lista1.submodulo.nombreSubModulo;
-              objeto.icon = "fa fa-puzzle-piece";
-              var arrayChildnuevo = [];
-              var arrayService = lista1.listaOpcion;
-              for (var i = 0; i < arrayService.length; i++) {
-                var obj = new Object();
-                obj.idOpcion = arrayService[i].idOpcion;
-                obj.name = arrayService[i].nombreOpcion;
-                obj.url = arrayService[i].ruta;
-                obj.icon = "fa fa-puzzle-piece";
-                arrayChildnuevo.push(obj);
-              }
-              objeto.children = arrayChildnuevo;
-              array.push(objeto);
-            }
             var objCerrar = new Object();
             objCerrar.name = "Cerrar Sesión";
             objCerrar.url = "/auth/login";
             objCerrar.icon = "fa fa-puzzle-piece";
             array.push(objCerrar);
             this.listaOpciones = array;
-          })
-          .catch((e) => console.log(e));
       },
     },
   };

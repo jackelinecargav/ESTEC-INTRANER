@@ -12,8 +12,6 @@ import { index } from './components/index';
 import 'vue-search-select/dist/VueSearchSelect.css';
 
 import { routes } from './router/routes';
-import { routesMantenimiento } from './router/mantenimientoRouter'
-import { routesCitas } from './router/citasRouter'
 import Multiselect from 'vue-multiselect'
 import 'vue-multiselect/dist/vue-multiselect.min.css'
 import ScrollLoader from 'vue-scroll-loader'
@@ -33,9 +31,7 @@ Vue.use(ScrollLoader)
 Vue.use(VueDataTables)
 
 const allRoutes = Array.prototype.concat(
-  routes,
-  routesMantenimiento,
-  routesCitas
+  routes
 );
 
 Vue.use('multiselect', Multiselect);

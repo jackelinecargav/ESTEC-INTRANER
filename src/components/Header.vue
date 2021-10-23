@@ -72,75 +72,13 @@
                                     <i class="ti-email"></i>
                                     <span class="count bg-primary">9</span>
                                 </button>
-                                <div class="dropdown-menu" aria-labelledby="message">
-                                    <p class="red">You have 4 Mails</p>
-                                    <a class="dropdown-item media bg-flat-color-1" href="#">
-                                        <span class="photo media-left"><img alt="avatar" src="../images/avatar/1.jpg"></span>
-                                        <div class="message media-body">
-                                            <span class="name float-left text-light">Jonathan Smith</span>
-                                            <span class="time float-right text-light">Just now</span>
-                                            <p class="text-light">Hello, this is an example msg</p>
-                                        </div>
-                                    </a>
-                                    <a class="dropdown-item media bg-flat-color-4" href="#">
-                                        <span class="photo media-left"><img alt="avatar" src="../images/avatar/2.jpg"></span>
-                                        <div class="message media-body">
-                                            <span class="name float-left text-light">Jack Sanders</span>
-                                            <span class="time float-right text-light">5 minutes ago</span>
-                                            <p class="text-light">Lorem ipsum dolor sit amet, consectetur</p>
-                                        </div>
-                                    </a>
-                                    <a class="dropdown-item media bg-flat-color-5" href="#">
-                                        <span class="photo media-left"><img alt="avatar" src="../images/avatar/3.jpg"></span>
-                                        <div class="message media-body">
-                                            <span class="name float-left text-light">Cheryl Wheeler</span>
-                                            <span class="time float-right text-light">10 minutes ago</span>
-                                            <p class="text-light">Hello, this is an example msg</p>
-                                        </div>
-                                    </a>
-                                    <a class="dropdown-item media bg-flat-color-3" href="#">
-                                        <span class="photo media-left"><img alt="avatar" src="../images/avatar/4.jpg"></span>
-                                        <div class="message media-body">
-                                            <span class="name float-left text-light">Rachel Santos</span>
-                                            <span class="time float-right text-light">15 minutes ago</span>
-                                            <p class="text-light">Lorem ipsum dolor sit amet, consectetur</p>
-                                        </div>
-                                    </a>
-                                </div>
+                                
                             </div>
                         </div>
                     </div>
 
                     <div class="col-sm-5">
-                        <div class="user-area dropdown float-right">
-                            <a href="#"
-                                class="dropdown-toggle"
-                                data-toggle="dropdown"
-                                aria-haspopup="true"
-                                aria-expanded="false"
-                                :class="{'show': isActive, '': !isActive }"
-                                @click="handleClick"
-                            >
-                                <img class="user-avatar rounded-circle" src="../images/admin.jpg" alt="User Avatar">
-                            </a>
-
-                            <div
-                                class="user-menu dropdown-menu"
-                                :class="{'show': isActive, '': !isActive }"
-                                @click="handleClick"
-                                >
-                                <a class="nav-link" href="#"><i class="fa fa- user"></i>My Profile</a>
-
-                                <a class="nav-link" href="#"><i class="fa fa- user"></i>Notifications <span class="count">13</span></a>
-
-                                <a class="nav-link" href="#"><i class="fa fa -cog"></i>Settings</a>
-
-                                <a class="nav-link" href="#"><i class="fa fa-power -off"></i>Logout</a>
-                            </div>
-                        </div>
-
-
-
+                    
                         <div class="language-select dropdown" id="language-select">
                             <a 
                                 class="dropdown-toggle" 

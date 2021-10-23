@@ -34,29 +34,29 @@ export default {
         {
           name: "Administracion",
           url: "/",
-          icon: "@/plugins/img/icons/ico-menu-administracion-sistema.png",
+          icon: 'fa caret-right',
           children: [
             {
               name: "Proveedores",
               url: "/menu/miCuenta",
-              icon: "@/plugins/img/icons/ico-menu-inbox.png",
+              icon: 'fa caret-right',
             },
           ],
         },
         {
           name: "Comprobantes ",
           url: "/",
-          icon: "@/plugins/img/icons/ico-menu-administracion-sistema.png",
+          icon: 'fa caret-right',
           children: [
             {
               name: "Pendientes",
               url: "/facturas",
-              icon: "@/plugins/img/icons/ico-menu-inbox.png",
+              icon: 'fa caret-right',
             },
             {
               name: "Facturas Físicas",
               url: "/facturasFisicas",
-              icon: "@/plugins/img/icons/ico-menu-inbox.png",
+              icon: 'fa caret-right',
             }
           ],
         },

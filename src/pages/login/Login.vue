@@ -41,50 +41,12 @@ export default {
   },
   mounted(){
     localStorage.setItem('logueado',false);
-
-    let usuariosPlataforma = localStorage.getItem("Busqueda-usuarios-plataforma");
-    if(usuariosPlataforma!=null){
-      localStorage.removeItem("Busqueda-usuarios-plataforma");
-    }
-    
   },
   methods:{
     Ingresar(){
-      var urlValidacion=Constantes.ruta+'obtenerUsuario/'+this.correo+'/'+this.contrasena;
-    console.log(urlValidacion);
-    axios.get(urlValidacion)
-        .then(response=>{
-             console.log(response.data);
-             if(response.data.acceso){
                localStorage.setItem('logueado',true); 
-               localStorage.setItem('nombreUsuarioLogueado',response.data.usuario.persona.nombres);
-               localStorage.setItem('paternoUsuarioLogueado',response.data.usuario.persona.paterno);
-               localStorage.setItem('maternoUsuarioLogueado',response.data.usuario.persona.materno);
-               localStorage.setItem('idUsuarioLogueado',response.data.usuario.idUsuario);
-               localStorage.setItem('cuenta',this.correo);
-               localStorage.setItem('idPersonaLogueado',response.data.usuario.persona.idPersona);
-               localStorage.setItem('nombreCompletoLogueado',response.data.usuario.persona.nombreCompleto);
-               localStorage.setItem('numeroDocumentoLogueado',response.data.usuario.persona.numeroDocumento);
-               localStorage.setItem('codUnidadLogueado', response.data.usuario.persona.codUnidadOrganizacional);
-               localStorage.setItem('desUnidadLogueado', response.data.usuario.persona.nombreUnidadOrganizacional);
-               localStorage.setItem('codUnidadCitas', response.data.usuario.persona.codUnidadCitas);
-               console.log(localStorage);
-              //  this.$router.push('/components/licencias/bandejaCertificado/');
-              //  this.$router.push('/components/principal/bienvenido/');
-               this.$router.push({ name: 'bienvenido', params: { userId: response.data.usuario.idUsuario } })
-             }else{
-               localStorage.setItem('logueado',false); 
-               console.log(localStorage);
-               //alert('Usuario no encontrado');
-               this.$swal({
-                  icon: 'error',
-                  title: 'Error',
-                  text: 'Verifique datos'
-                });
-             }
-            })
-            .catch(e=>console.log('error'+e))
-    }
+               this.$router.push({ name: 'bienvenido', params: { userId: 13 } })
+              }
   }
 }
 </script>
@@ -121,7 +83,7 @@ export default {
   }
   .btn-muni {
     margin-top: 20px;
-    background: #26BDC5;
+    background: #003462;
     color: #fff;
     font-size: 14px;
     border-radius: 5px;
