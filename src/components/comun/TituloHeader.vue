@@ -11,7 +11,7 @@
     color: #0078cf;
     padding-bottom: 10px;
     padding-top: 10px;
-    font-size: 16px;
+    font-size: 18px;
   }
 </style>
 <script>

@@ -2,6 +2,7 @@
 const Proveedores = resolve => { require.ensure(['../components/Administracion/Proveedores.vue'], ()=>{ resolve(require('../components/Administracion/Proveedores.vue')); }); };
 const Facturas = resolve => { require.ensure(['../components/Comprobantes/Facturas.vue'], ()=>{ resolve(require('../components/Comprobantes/Facturas.vue')); }); };
 const FacturasFisicas = resolve => { require.ensure(['../components/Comprobantes/facturasFisicas.vue'], ()=>{ resolve(require('../components/Comprobantes/facturasFisicas.vue')); }); };
+const DetalleFactura = resolve => { require.ensure(['../components/Comprobantes/DetalleFactura.vue'], ()=>{ resolve(require('../components/Comprobantes/DetalleFactura.vue')); }); };
 //rutas muni 
 const Dashboard = resolve => { require.ensure(['../views/Dashboard.vue'], ()=>{ resolve(require('../views/Dashboard.vue')); }); };
 const Bienvenido = resolve => { require.ensure(['../components/principal/bienvenido.vue'], ()=>{ resolve(require('../components/principal/bienvenido.vue')); }); };
@@ -52,7 +53,7 @@ export const routes = [
     { path : '/components/Administracion/Proveedores', name: 'Proveedores', component: Proveedores, props:true },
     { path : '/components/Comprobantes/Facturas', name: 'Pendientes', component: Facturas, props:true },
     { path : '/components/Comprobantes/facturasFisicas', name: 'Facturas Físicas', component: FacturasFisicas, props:true },
-
+    { path : '/components/Comprobantes/DetalleFactura/:idComprobante', name: 'DetalleFactura', component: DetalleFactura, props:true },
 
     // // UI Components
     { path : '/components/principal/bienvenido', name: 'bienvenido', component: Bienvenido, props:true },

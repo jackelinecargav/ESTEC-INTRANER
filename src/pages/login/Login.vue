@@ -44,7 +44,7 @@ export default {
   },
   methods:{
     Ingresar(){
-               localStorage.setItem('logueado',true); 
+               localStorage.setItem('User',this.correo); 
                this.$router.push({ name: 'bienvenido', params: { userId: 13 } })
               }
   }

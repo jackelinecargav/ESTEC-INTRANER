@@ -440,22 +440,6 @@ export default {
       this.getCitasArea(0);
     },
 
-    getResponsables() {
-      var url =
-        Constantes.rutacitas + "responsables/" + this.codUnidadCitas + "/2";
-      console.log("url DE RESPONSABLES");
-      console.log(url);
-      axios
-        .get(url)
-        .then(response => {
-          // console.log("LISTA DE RESPONSABLES");
-          this.listaResponsables = response.data.data;
-          // console.log(this.listaResponsables)
-          this.stringResponsables();
-        })
-        .catch(e => console.log(e));
-    },
-
     PadLeft(value, length) {
       return value.toString().length < length
         ? PadLeft("0" + value, length)
