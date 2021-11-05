@@ -10,7 +10,7 @@
                     <!-- <template v-for="(item, index) in listaOpciones"> -->
                     <template v-for="(item, index) in listaOpciones">
                         <template v-if="item.title">
-                            <SidebarNavTitle :name="item.name" :classes="item.class" :wrapper="item.wrapper" :key="index"/>
+                            <SidebarNavTitle :name="item.name" :classes="item.class" :wrapper="item.wrapper" :icon="item.icon" :key="index"><i class="el-icon-delete"></i></SidebarNavTitle>
                         </template>
                         <template v-else-if="item.divider">
                             <li class="divider" :key="index"></li>
@@ -74,36 +74,36 @@ export default {
         {
           name: "Administracion",
           url: "/",
-          icon: "caret-right",
+          icon: "el-icon-setting",
           children: [
             {
               name: "Proveedores",
               url: "/menu/miCuenta",
-              icon: "fa caret-right",
+              icon: "el-icon-user",
             },
           ],
         },
         {
           name: "Comprobantes ",
           url: "/",
-          icon: "fa caret-right",
+          icon: "el-icon-document-copy",
           children: [
             {
               name: "Pendientes",
               url: "/facturas",
-              icon: "fa caret-right",
+              icon: "el-icon-folder-opened",
             },
             {
               name: "Facturas Físicas",
               url: "/facturasFisicas",
-              icon: "fa caret-right",
+              icon: "el-icon-document",
             }
           ],
         },
          {
           name: "Cerrar Sesión",
           url: "/",
-          icon: "fa caret-right",
+          icon: "el-icon-circle-close",
         },
       ],
             

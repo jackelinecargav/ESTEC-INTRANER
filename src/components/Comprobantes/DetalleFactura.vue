@@ -1033,7 +1033,7 @@
 
               <el-form-item class="segItem">
                 <el-row :gutter="10">
-                  <el-col :xs="24" :md="4">
+                  <el-col :xs="24" :md="2">
                     <el-checkbox v-model="detraccion">Detracción :</el-checkbox>
                   </el-col>
                   <el-col :xs="24" :md="8">
@@ -1056,7 +1056,7 @@
                       </el-option>
                     </el-select></div>
                   </el-col>
-                  <el-col :xs="24" :md="4">
+                  <el-col :xs="24" :md="4" style="margin-left: 10%;">
                     <el-checkbox v-model="igvAfecto">Afecto IGV</el-checkbox>
                   </el-col>
                 </el-row>
@@ -1123,18 +1123,18 @@
               <el-row :gutter="10">
                 <el-col :xs="24" :md="12">
                   <div class="col text-right">
-                    <button class="btn btn-danger" 
+                    <el-button type="danger"
+                    plain
                     @click="imprimirEstadoCuenta()">
                         Vista Previa
                         <b-icon-arrow-down></b-icon-arrow-down>                                
-                    </button>
+                    </el-button>
                    </div>
 
                 </el-col>
                 <el-col :xs="24" :md="12">
                   <el-button
                     type="primary"
-                    style="width: 200px; height: 50px; font-size: 17px"
                     plain
                     >Provisionar</el-button
                   >
@@ -1167,7 +1167,6 @@ export default {
       tituloComprobante: "",
       conceptoText: null,
       detraccion: false,
-      igvAfecto: true,
       distriGasto: false,
 
       options: [{
@@ -1191,7 +1190,6 @@ export default {
       accion: null,
       currentDate: null,
 
-      idComprobante: null,
       detalle: {},
       detalleFactura: null,
       detalleTrazabilidad: null,
@@ -1205,6 +1203,10 @@ export default {
       IgvV: null,
       accionEstadoBoton: null,
       mostrarContabilidad: false,
+
+       //armar asiento 
+      idComprobante: null,
+      igvAfecto: true,
     };
   },
   created() {
@@ -1232,8 +1234,9 @@ export default {
       return moment(valor).format("DD-MM-YYYY");
     },
     imprimirEstadoCuenta(){
-      
-      let url = constantes.rutaAdmin+"/imprimir-eecc/"+this.detalle.idComprobante;
+      if(this.igvAfecto) {var igv = 1}
+      else{var igv = 0;}
+      let url = constantes.rutaAdmin+"/visualizar-asiento/"+this.detalle.idComprobante+"/"+igv;
             let documento =url;
             window.open(documento, "_blank");
         },
@@ -1248,7 +1251,7 @@ export default {
         })
         .then((response) => {
           this.detalle = response.data.result[0];
-          if(this.detalle.id004Estado==11) this.mostrarContabilidad=true;
+          if(this.detalle.id004Estado==11 ||this.detalle.id004Estado==9 ) this.mostrarContabilidad=true;
           this.tituloComprobante = (this.detalle.id007TipoComprobante == 26)?"Recibo":"Factura";
           this.conceptoText =
             this.detalle.proveedorNombreComercial + ", " + this.detalle.numero;

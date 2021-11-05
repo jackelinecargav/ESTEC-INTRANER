@@ -81,7 +81,7 @@
 
                     </div>
 
-                    <table id="example2" class="table table-hover table-sm mb-2 desktop">
+                    <table id="example2" class="table table-hover table-sm">
                         <thead>
                             <tr>
                                 <th>Tipo</th>
@@ -231,6 +231,7 @@ export default {
             tipoComprobanteResultado: null,
             tipoComprobanteSeleccionado: null,
             tableData: null,
+
         };
     },
     created() {
@@ -385,6 +386,9 @@ export default {
         margin-top: -8px;
         margin-bottom: 10px;
         width: 100% !important;
+    }
+    .table{
+       display: none; 
     }
 
     .mobil {

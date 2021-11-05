@@ -58,7 +58,7 @@
                                 <tr>
                                     <th><b>Razón Social</b></th>
                                     <th><b>RUC</b></th>
-                                    <th class="desktop"><b>Correo electrónico</b></th>
+                                    <th class="mostrar"><b>Correo electrónico</b></th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -70,7 +70,7 @@
                                     <td>
                                         <template>{{ item.persona.nroDocumento }}</template>
                                     </td>
-                                    <td class="desktop">
+                                    <td class="mostrar">
                                         <template>{{ item.usuario }}</template>
                                     </td>
                                     <td>
@@ -360,17 +360,7 @@ export default {
 .desktop {
     display: block;
 }
-.tamañoDialogo{
-  width: 45%;
-  @media (max-width: 500px) {
-  width: 100%;
-  float: center;
-  .el-button{
-    width: 100%;
-    margin-bottom: 10px;
-  }
-  }
-}
+
 
 @media (max-width: 500px) {
     .alinear {
@@ -378,7 +368,9 @@ export default {
         margin-bottom: 10px;
         width: 100% !important;
     }
-
+    .mostrar{
+        display: none;
+    }
     .mobil {
         display: block;
     }

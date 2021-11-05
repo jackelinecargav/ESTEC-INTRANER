@@ -6,8 +6,8 @@
     @click="handleClick"
   >
     <a href="#" >
-      <i class="menu-icon" :class="icon"></i>
-      <span class="menu-title-text">{{name}}</span>
+      <i :class="icon">   </i>
+      <span class="menu-title-text">  {{name}}</span>
     </a>
 
     <ul
