@@ -1032,7 +1032,6 @@ export default {
         },
         Provisionar(valor){
           let asientoData = {};
-          alert(this.igvAfecto)
             asientoData.id_comprobante=this.detalle.idComprobante,
             asientoData.fecha_asiento= this.fechaActual ,
             asientoData.concepto= this.detalle.listaComprobanteDetalle[0].descripcion,
@@ -1062,7 +1061,7 @@ export default {
             } else {
                 var igv = 0;
             }
-            let url = constantes.rutaAdmin + "/visualizar-asiento/" + this.detalle.idComprobante + "/" + igv;
+            let url = constantes.rutaAdmin + "/visualizar-asiento/" + this.detalle.idComprobante + "/" + igv+ "/" +this.detraccion;
             let documento = url;
             window.open(documento, "_blank");
         },
