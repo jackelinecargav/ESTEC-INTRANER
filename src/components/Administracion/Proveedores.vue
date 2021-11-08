@@ -167,7 +167,7 @@
 import axios from "axios";
 import TituloHeader from "../comun/TituloHeader.vue";
 import constantes from "../../store/constantes";
-const ESTADO_PENDIENTE = 9;
+const ESTADO_PENDIENTE = 33;
 export default {
     components: {
         TituloHeader,
@@ -175,7 +175,7 @@ export default {
     data() {
         return {
             fecha: null,
-            estadoProveedor: 2,
+            estadoProveedor: 33,
             estadoUsuario: 'Pendiente',
             innerVisible: false,
             detalleSolicitud: null,
