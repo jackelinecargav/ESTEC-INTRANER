@@ -59,6 +59,7 @@
       },
       opcionesMenu() {
             var objCerrar = new Object();
+            let array = new Array();
             objCerrar.name = "Cerrar Sesión";
             objCerrar.url = "/auth/login";
             objCerrar.icon = "fa fa-puzzle-piece";

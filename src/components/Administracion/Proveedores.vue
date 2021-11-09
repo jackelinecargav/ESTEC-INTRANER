@@ -142,7 +142,7 @@
                                 <span slot="footer" class="dialog-footer">
                                     <el-button type="danger" @click="innerVisible = true">Denegar</el-button>
                                     <el-button type="primary" @click="
-                    (dialogVisible = false), activarCuenta(1)
+                    (dialogVisible = false), activarCuenta(ESTADO_APROBADO)
                   ">Aprobar</el-button>
                                 </span>
                                 <el-dialog title="Motivo de rechazo:" width="30%" :visible.sync="innerVisible" append-to-body>
@@ -176,6 +176,7 @@ export default {
         return {
             fecha: null,
             estadoProveedor: 33,
+            ESTADO_APROBADO: 34,
             estadoUsuario: 'Pendiente',
             innerVisible: false,
             detalleSolicitud: null,
@@ -195,6 +196,7 @@ export default {
             telefono: null,
             entidadDetraccion: "Banco de la Nacion",
             monedaDetraccion: "soles",
+            tipoProveedorResultado: [],
 
             cargando: null,
         };

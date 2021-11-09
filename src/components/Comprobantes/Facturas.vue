@@ -351,7 +351,7 @@ export default {
                         usuariosresponsable: localStorage.getItem("User"),
                         numeroFac: this.numeroFac,
                         fecInicio: fechaInicio,
-                        nroDocumento: this.numeroRuc,
+                        nroDocumento: (this.numeroRuc!=null && this.numeroRuc.length > 0)?this.numeroRuc: null,
                         fecFin: fechaFin,
                         tipoComprobante: this.tipoComprobanteSeleccionado,
                     },

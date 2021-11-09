@@ -399,7 +399,7 @@
                                 </span>
                             </el-dialog>
                             <el-dialog title="Estado" :visible.sync="dialogEstado" width="30%">
-                                <span>Seguro que desea rechazar el documento?</span>
+                                <span>Seguro que desea {{(accionEstadoBoton==1)?"aprobar":"rechazar"}} el documento?</span>
                                 <span slot="footer" class="dialog-footer">
                                     <el-button type="danger" @click="dialogEstado = false">No</el-button>
                                     <el-button type="primary" @click="IngresarObservacion = true">Si</el-button>
@@ -409,7 +409,7 @@
                                 <el-input type="textarea" autosize v-model="observacion">
                                 </el-input>
                                 <span slot="footer" class="dialog-footer">
-                                    <el-button type="primary" @click="Accion()">Guardar</el-button>
+                                    <el-button type="primary" @click="dialogEstado= false;IngresarObservacion= false; Accion()">Guardar</el-button>
                                 </span>
                             </el-dialog>
                             <div></div>
