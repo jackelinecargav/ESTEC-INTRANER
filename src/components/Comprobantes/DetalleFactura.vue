@@ -399,7 +399,7 @@
                                 </span>
                             </el-dialog>
                             <el-dialog title="Estado" :visible.sync="dialogEstado" width="30%">
-                                <span>Seguro que desea {{(accionEstadoBoton==1)?"aprobar":"rechazar"}} el documento?</span>
+                                <span>Seguro que desea rechazar el documento?</span>
                                 <span slot="footer" class="dialog-footer">
                                     <el-button type="danger" @click="dialogEstado = false">No</el-button>
                                     <el-button type="primary" @click="IngresarObservacion = true">Si</el-button>
@@ -409,7 +409,7 @@
                                 <el-input type="textarea" autosize v-model="observacion">
                                 </el-input>
                                 <span slot="footer" class="dialog-footer">
-                                    <el-button type="primary" @click="dialogEstado= false;IngresarObservacion= false; Accion()">Guardar</el-button>
+                                    <el-button type="primary" @click="Accion()">Guardar</el-button>
                                 </span>
                             </el-dialog>
                             <div></div>
@@ -816,12 +816,13 @@
                                     </div>
                                 </div>
                                 <el-dialog title="Estado" :visible.sync="dialogEstado" width="30%">
-                                    <span>Seguro que desea comfirmar el documento?</span>
+                                    <span>Seguro que desea confirmar el documento?</span>
                                     <span slot="footer" class="dialog-footer">
                                         <el-button type="danger" @click="dialogEstado = false">No</el-button>
                                         <el-button type="primary" @click="Aprobar()">Si</el-button>
                                     </span>
                                 </el-dialog>
+
                                 <el-dialog title="Estado" :visible.sync="dialogEstadoDenegado" width="30%">
                                     <span>Seguro que desea rechazar el documento?</span>
                                     <span slot="footer" class="dialog-footer">
@@ -873,17 +874,13 @@
                                         <table id="example2" class="table" width="95%" height="95%">
                                             <tbody>
                                                 <tr v-for="item of numeroItems" :key="'Gasto ' + item.numeros">
-                                                    <td width="10%">CC{{ item.numeros }}</td>
+                                                    <td width="10%">Cta.Contable {{ item.numeros }}</td>
                                                     <td width="15%">
-                                                        <el-input type="number" class="input" v-model="item.cc"></el-input>
+                                                        <el-input type="number" maxlength="12" class="input" v-model="item.cc"></el-input>
                                                     </td>
                                                     <td width="10%">Centro de Costos</td>
                                                     <td width="15%">
                                                         <el-input type="number" maxlength="3" class="input" v-model="item.costo"></el-input>
-                                                    </td>
-                                                    <td width="10%">Anexo</td>
-                                                    <td width="15%">
-                                                        <el-input type="number" class="input" v-model="item.importe"></el-input>
                                                     </td>
                                                     <td width="10%">Importe</td>
                                                     <td width="15%">
@@ -895,23 +892,33 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    <div id="cabecera" class="alinieado-derecha">
+                                    <div id="cabecera" 
+                                    >
                                         <el-row :gutter="10">
-                                            <el-col :xs="24" :md="12">
+                                            <el-col :xs="24" :md="8">
                                                 <div class="col text-right">
                                                     <el-button type="danger" plain @click="Provisionar(2)">
                                                         Vista Previa
                                                         <b-icon-arrow-down></b-icon-arrow-down>
                                                     </el-button>
                                                 </div>
-
                                             </el-col>
-                                            <el-col :xs="24" :md="12">
+                                            <el-col :xs="24" :md="8">
                                                 <el-button type="primary" plain @click="Provisionar(1)">Provisionar</el-button>
+                                            </el-col>
+                                            <el-col :xs="24" :md="8">
+                                                <el-button  type="warning" @click="IngresarObservacionAsiento=true" plain >Observar</el-button>
                                             </el-col>
                                         </el-row>
                                         <br />
                                     </div>
+                                     <el-dialog title="Observar" :visible.sync="IngresarObservacionAsiento" width="20%">
+                                    <el-input type="textarea" autosize v-model="observacionAsiento">
+                                    </el-input>
+                                    <span slot="footer" class="dialog-footer">
+                                        <el-button type="primary" @click="GrabarObservar()">Guardar</el-button>
+                                    </span>
+                                </el-dialog>
                                 </div>
                             </el-tab-pane>
                         </el-tabs>
@@ -961,6 +968,7 @@ export default {
             dialogEstadoDenegado: false,
             dialogEstado: false,
             IngresarObservacion: false,
+            IngresarObservacionAsiento: false,
             observacion: null,
             accion: null,
             currentDate: null,
@@ -980,6 +988,8 @@ export default {
             mostrarContabilidad: false,
             catalogDetracciones:null,
             datosProvision:{},
+            nomResponsable:null,
+            observacionAsiento:null,
             //armar asiento 
             idComprobante: null,
             igvAfecto: true,
@@ -995,6 +1005,53 @@ export default {
         console.log("numero converido plata " + this.milesNumeros(30038488484.56));
     },
     methods: {
+      GrabarObservar(){
+        
+            let url = constantes.rutaAdmin + "/consulta-traza-observacion"
+            axios
+                .get(url, {
+                    params: {
+                        idComprobante: this.detalle.idComprobante
+                    },
+                })
+                .then((response) => {
+                    this.nomResponsable=response.data.result                    
+                let url = constantes.rutaAdmin + "/estado-factura"
+                  axios.get(url, {
+                          params: {
+                              idComprobante: this.detalle.idComprobante,
+                              estado: 9,
+                              id008Trazabilidad: 37,
+                              observacion: this.observacionAsiento,
+                              usuarioModificador: localStorage.getItem("User"),
+                              usuarioResponsable: this.nomResponsable,
+                          },
+                      })
+                      .then((response) => {
+                          console.log(response);
+                          this.consultar();
+                          if (response.data.esCorrecto) {
+                              this.observacion = " ";
+                          } else {
+                              this.$swal({
+                                  icon: "error",
+                                  title: "Error",
+                                  text: "Intentelo más tarde",
+                              });
+                          }
+                      })
+                      .catch((e) => {
+                          console.log(e);
+                      });
+
+                })
+                .catch((e) => {
+                    console.log(e);
+
+                 });
+
+           
+      },
       obtenerCatalogoDetracciones(){
         let url = constantes.rutaAdmin + "/catalogo-contabilidad";
             axios
