@@ -19,7 +19,7 @@
                         <template v-else>
                             <template v-if="item.children">
                                 <!-- First Level Dropdown -->
-                                <SidebarNavDropdown :name="item.name" :url="item.url" :icon="item.icon" :key="index">
+                                <SidebarNavDropdown :name="item.name " :url="item.url" :icon="item.icon" :key="index">
                                     <template v-for="( childL1, index ) in item.children">
                                         <template v-if="childL1.children">
                                             <!-- Second Level Dropdown menu -->
@@ -31,7 +31,7 @@
                                         </template>
                                         <template v-else>
                                             <SidebarNavItem :classes="item.class" :key="index">
-                                                <SidebarNavLink :name="childL1.name" :idOpcion="childL1.idOpcion+''" :url="childL1.url" :icon="childL1.icon" :badge="childL1.badge" :variant="item.variant"/>
+                                                <SidebarNavLink :title="childL1.titulo" :name="childL1.name" :idOpcion="childL1.idOpcion+''" :url="childL1.url" :icon="childL1.icon" :badge="childL1.badge" :variant="item.variant"/>
                                             </SidebarNavItem>
                                         </template>
                                     </template>
@@ -39,7 +39,7 @@
                             </template>
                             <template v-else>
                                 <SidebarNavItem :classes="item.class" :key="index">
-                                    <SidebarNavLink :name="item.name" :url="item.url" :icon="item.icon" :badge="item.badge" :variant="item.variant"/>
+                                    <SidebarNavLink  :name="item.name+'c'" :url="item.url" :icon="item.icon" :badge="item.badge" :variant="item.variant"/>
                                 </SidebarNavItem>
                             </template>
                         </template>
@@ -78,6 +78,7 @@ export default {
           children: [
             {
               name: "Proveedores",
+              titulo: "Proveedores",
               url: "/menu/miCuenta",
               icon: "el-icon-user",
             },
@@ -90,20 +91,42 @@ export default {
           children: [
             {
               name: "Pendientes",
+              titulo: "Pendientes",
               url: "/facturas",
               icon: "el-icon-folder-opened",
             },
             {
               name: "Facturas Físicas",
+              titulo: "Facturas Físicas",
+              url: "/facturasFisicas",
+              icon: "el-icon-document",
+            }
+          ],
+        },
+        {
+          name: "Bancos",
+          url: "/",
+          icon: "el-icon-document-copy",
+          children: [
+            {
+              name: "ArchivoBandeja",
+              titulo: "Bandeja",
+              url: "/facturas",
+              icon: "el-icon-folder-opened",
+            },
+            {
+              name: "ArchivoNuevo",
+              titulo: "Nuevo",
               url: "/facturasFisicas",
               icon: "el-icon-document",
             }
           ],
         },
          {
-          name: "Cerrar Sesión",
-          url: "/",
-          icon: "el-icon-circle-close",
+            name: "Cerrar Sesión",
+            titulo: "Cerrar Sesión",
+            url: "/",
+            icon: "el-icon-circle-close",
         },
       ],
             

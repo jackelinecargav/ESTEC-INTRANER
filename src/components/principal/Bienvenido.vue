@@ -60,6 +60,23 @@ export default {
             }
           ],
         },
+        {
+          name: "Archivo Banco ",
+          url: "/",
+          icon: 'fa caret-right',
+          children: [
+            {
+              name: "ArchivoBandeja",
+              url: "/",
+              icon: 'fa caret-right',
+            },
+            {
+              name: "ArchivoNuevo",
+              url: "/",
+              icon: 'fa caret-right',
+            }
+          ],
+        },
       ],
     }
   },

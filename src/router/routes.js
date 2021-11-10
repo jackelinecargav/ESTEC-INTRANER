@@ -3,6 +3,8 @@ const Proveedores = resolve => { require.ensure(['../components/Administracion/P
 const Facturas = resolve => { require.ensure(['../components/Comprobantes/Facturas.vue'], ()=>{ resolve(require('../components/Comprobantes/Facturas.vue')); }); };
 const FacturasFisicas = resolve => { require.ensure(['../components/Comprobantes/facturasFisicas.vue'], ()=>{ resolve(require('../components/Comprobantes/facturasFisicas.vue')); }); };
 const DetalleFactura = resolve => { require.ensure(['../components/Comprobantes/DetalleFactura.vue'], ()=>{ resolve(require('../components/Comprobantes/DetalleFactura.vue')); }); };
+const ArchivoBancoBandeja = resolve => { require.ensure(['../components/archivo-banco/Bandeja.vue'], ()=>{ resolve(require('../components/archivo-banco/Bandeja.vue')); }); };
+const ArchivoBancoNuevo = resolve => { require.ensure(['../components/archivo-banco/Nuevo.vue'], ()=>{ resolve(require('../components/archivo-banco/Nuevo.vue')); }); };
 //rutas muni 
 const Dashboard = resolve => { require.ensure(['../views/Dashboard.vue'], ()=>{ resolve(require('../views/Dashboard.vue')); }); };
 const Bienvenido = resolve => { require.ensure(['../components/principal/bienvenido.vue'], ()=>{ resolve(require('../components/principal/bienvenido.vue')); }); };
@@ -54,6 +56,8 @@ export const routes = [
     { path : '/components/Comprobantes/Facturas', name: 'Pendientes', component: Facturas, props:true },
     { path : '/components/Comprobantes/facturasFisicas', name: 'Facturas Físicas', component: FacturasFisicas, props:true },
     { path : '/components/Comprobantes/DetalleFactura/:idComprobante', name: 'DetalleFactura', component: DetalleFactura, props:true },
+    { path : '/components/archivo-banco/Bandeja', name: 'ArchivoBandeja', component: ArchivoBancoBandeja, props:true },
+    { path : '/components/archivo-banco/Nuevo', name: 'ArchivoNuevo', component: ArchivoBancoNuevo, props:true },
 
     // // UI Components
     { path : '/components/principal/bienvenido', name: 'bienvenido', component: Bienvenido, props:true },

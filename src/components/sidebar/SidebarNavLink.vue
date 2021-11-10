@@ -1,12 +1,12 @@
 <template>
 
         <a v-if="ExternalLink" :href="url" :classes="classList">
-            <i class="menu-icon" :class="icon"></i> <span class="menu-title-text"> {{ name }} </span>
+            <i class="menu-icon" :class="icon"></i> <span class="menu-title-text"> {{ title }} </span>
             <span :class="'badge badge-' + badge.variant" v-if="badge && badge.text">{{ badge.text }}</span>
         </a>
 
         <router-link v-else :to="{ name: name,  params: { opcion: idOpcion }}" :class="classList" exact>
-            <i class="menu-icon" :class="icon"></i> <span class="menu-title-text">{{ name }}</span>
+            <i class="menu-icon" :class="icon"></i> <span class="menu-title-text">{{ title }}</span>
             <span :class="'badge badge-' + badge.variant" v-if="badge && badge.text" >{{ badge.text }}</span>
         </router-link>
 
@@ -18,6 +18,10 @@
     export default{
         name: 'sidebar-nav-link',
         props: {
+            title: {
+                type: String,
+                default: ''
+            },
             name: {
                 type: String,
                 default: ''
