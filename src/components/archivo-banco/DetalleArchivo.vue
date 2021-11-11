@@ -1,12 +1,12 @@
 <template>
   <div class="contenedor-principal">
-    <titulo-header>Programacion pago</titulo-header>
+    <titulo-header>Detalle archivo</titulo-header>
     <div class="card menu">
       <div class="">
         <el-row>
           <el-col :md="5">
-            <label>Nro. archivo:</label>
-            <el-input placeholder="Nro. de archivo"></el-input>
+            <label>Nro. comprobante:</label>
+            <el-input placeholder="Nro. de comprobante"></el-input>
           </el-col>
           <el-col :md="8">
             <label>Fecha:</label>
@@ -20,7 +20,7 @@
             >
             </el-date-picker>
           </el-col>
-          <el-col :md="4">
+          <!-- <el-col :md="4">
             <label>Estado:</label>
             <el-select v-model="value" placeholder="Select">
               <el-option
@@ -31,7 +31,7 @@
               >
               </el-option>
             </el-select>
-          </el-col>
+          </el-col> -->
         </el-row>
         <el-row :gutter="10" style="display: flex; justify-content: flex-end;">
           <el-col :md="4">
@@ -42,7 +42,7 @@
               type="primary"
               style="width: 100%; "
               @click="mostrarPopup = true"
-              >Nuevo</el-button
+              >Generar Archivo</el-button
             >
           </el-col>
         </el-row>
@@ -51,12 +51,13 @@
         <table id="example2" class="table table-hover table-sm mb-2">
           <thead>
             <tr>
-              <th width="10%" class="text-center">Nro. archivo</th>
-              <th width="20%" class="text-center">Fecha programación</th>
-              <th width="20%" class="text-center">Banco</th>
-              <th width="10%" class="text-center">Cantidad</th>
-              <th width="20%" class="text-center">Usuario</th>
+              <th width="10%" class="text-center">Comprobante</th>
+              <th width="20%" class="text-center">Proveedor</th>
+              <th width="10%" class="text-center">F. vencimiento</th>
+              <th width="10%" class="text-center">Moneda</th>
+              <th width="10%" class="text-center">Importe total</th>
               <th width="10%" class="text-center">Estado</th>
+              <th width="10%" class="text-center"></th>
               <th width="10%" class="text-center"></th>
               <!-- <th class="text-center" width="7%"></th> -->
             </tr>
@@ -64,36 +65,38 @@
           <tbody>
             <tr
               v-for="item of listaArchivos"
-              :key="'archivo ' + item.numeroArchivo"
+              :key="'archivo ' + item.idArchivoDetalle"
             >
               <td>
-                <template>{{ item.numeroArchivo }}</template>
+                <template>{{ item.comprobante }}</template>
               </td>
               <td>
-                <template>{{ item.fechaProgramacion }}</template>
+                <template>{{ item.proveedor }}</template>
+              </td>
+              <td style="text-align: center">
+                <template>{{ item.vencimiento }}</template>
+              </td>
+              <td style="text-align: center">
+                <template>{{ item.moneda }}</template>
+              </td>
+              <td style="text-align: right">
+                <template>{{ item.importe }}</template>
+              </td>
+              <td style="text-align: right">
+                <template><div>{{ item.estado }}</div></template>
               </td>
               <td>
-                <template>{{ item.banco }}</template>
-              </td>
-              <td>
-                <template>{{ item.cantidad }}</template>
-              </td>
-              <td>
-                <template>{{ item.usuario }}</template>
-              </td>
-              <td>
-                <template v-if="item.estado == ESTADO_PROGRAMADO">{{
+                <!-- <template v-if="item.estado == ESTADO_PROGRAMADO">{{
                   "Programado"
                 }}</template>
                 <template v-if="item.estado == ESTADO_PENDIENTE">{{
                   "Pendiente"
-                }}</template>
+                }}</template> -->
+                  <el-button style="width: 100%" type="text">Detalle</el-button>
               </td>
               <td>
                 <template>
-                  <el-button @click="verDetalle(item.idArchivo)" type="text"
-                    >Detalle</el-button
-                  >
+                  <el-button style="width: 100%; color: red" type="text">Eliminar</el-button>
                 </template>
                 <template></template>
                 <template></template>
@@ -102,16 +105,8 @@
           </tbody>
         </table>
       </div>
-      <el-dialog
-        :visible.sync="mostrarPopup"
-        title="Nueva programacion de pago"
-        width="60%"
-      >
+      <el-dialog :visible.sync="mostrarPopup" title="Crear nuevo archivo">
         <nuevo></nuevo>
-        <spam slot="footer" class="dialog-footer">
-          <el-button @click="mostrarPopup = false">Cancel</el-button>
-          <el-button type="primary">Generar programacion</el-button></spam
-        >
       </el-dialog>
     </div>
   </div>
@@ -140,20 +135,31 @@ export default {
       mostrarPopup: false,
       listaArchivos: [
         {
-          numeroArchivo: "1",
-          fechaProgramacion: moment(new Date()).format("DD-MM-YYYY"),
-          banco: "BBVA",
-          cantidad: "4",
-          usuario: "AAA",
-          estado: "4",
+          idArchivoDetalle: 1,
+          proveedor: "Pharma salud",
+          comprobante: "Factura E551-016",
+          vencimiento: "2021-11-15",
+          moneda: "SOLES",
+          importe: "120, 012.85",
+          estado: "Pendiente Pago",
         },
         {
-          numeroArchivo: "2",
-          fechaProgramacion: moment(new Date()).format("DD-MM-YYYY"),
-          banco: "SCOTIABANK",
-          cantidad: "5",
-          usuario: "CBM",
-          estado: "4",
+          idArchivoDetalle: 2,
+          proveedor: "Pharma salud",
+          comprobante: "Factura E551-016",
+          vencimiento: "2021-11-15",
+          moneda: "SOLES",
+          importe: "120, 012.85",
+          estado: "Pendiente Pago",
+        },
+        {
+          idArchivoDetalle: 3,
+          proveedor: "Pharma salud",
+          comprobante: "Factura E551-016",
+          vencimiento: "2021-11-15",
+          moneda: "SOLES",
+          importe: "120, 012.85",
+          estado: "Pendiente Pago",
         },
       ],
       options: [
@@ -180,12 +186,6 @@ export default {
   methods: {
     obtenerPendientes() {
       console.log("Nuevo log");
-    },
-    verDetalle() {
-      let routeData = this.$router.resolve({
-        path: "/components/archivo-banco/DetalleArchivo",
-      });
-      window.open(routeData.href, "_blank");
     },
   },
 };

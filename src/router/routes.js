@@ -5,6 +5,7 @@ const FacturasFisicas = resolve => { require.ensure(['../components/Comprobantes
 const DetalleFactura = resolve => { require.ensure(['../components/Comprobantes/DetalleFactura.vue'], ()=>{ resolve(require('../components/Comprobantes/DetalleFactura.vue')); }); };
 const ArchivoBancoBandeja = resolve => { require.ensure(['../components/archivo-banco/Bandeja.vue'], ()=>{ resolve(require('../components/archivo-banco/Bandeja.vue')); }); };
 const ArchivoBancoNuevo = resolve => { require.ensure(['../components/archivo-banco/Nuevo.vue'], ()=>{ resolve(require('../components/archivo-banco/Nuevo.vue')); }); };
+const ArchivoBancoDetalle = resolve => { require.ensure(['../components/archivo-banco/DetalleArchivo.vue'], ()=>{ resolve(require('../components/archivo-banco/DetalleArchivo.vue')); }); };
 //rutas muni 
 const Dashboard = resolve => { require.ensure(['../views/Dashboard.vue'], ()=>{ resolve(require('../views/Dashboard.vue')); }); };
 const Bienvenido = resolve => { require.ensure(['../components/principal/bienvenido.vue'], ()=>{ resolve(require('../components/principal/bienvenido.vue')); }); };
@@ -58,6 +59,7 @@ export const routes = [
     { path : '/components/Comprobantes/DetalleFactura/:idComprobante', name: 'DetalleFactura', component: DetalleFactura, props:true },
     { path : '/components/archivo-banco/Bandeja', name: 'ArchivoBandeja', component: ArchivoBancoBandeja, props:true },
     { path : '/components/archivo-banco/Nuevo', name: 'ArchivoNuevo', component: ArchivoBancoNuevo, props:true },
+    { path : '/components/archivo-banco/DetalleArchivo', name: 'DetalleArchivo', component: ArchivoBancoDetalle, props:true },
 
     // // UI Components
     { path : '/components/principal/bienvenido', name: 'bienvenido', component: Bienvenido, props:true },

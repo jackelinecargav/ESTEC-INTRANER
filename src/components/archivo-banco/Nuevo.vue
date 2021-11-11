@@ -6,12 +6,12 @@
         <el-input placeholder="Nro. de archivo"></el-input>
       </el-col> -->
       <el-col :md="8">
-        <label>Fecha:</label>
+        <label>Fecha programada de pago:</label>
         <el-date-picker v-model="fecha" style="width: 100%" placeholder="Fecha">
         </el-date-picker>
       </el-col>
       <el-col :md="6">
-        <label>Estado:</label>
+        <label>Banco:</label>
         <el-select v-model="value" placeholder="Select">
           <el-option
             v-for="item in options"
@@ -25,6 +25,10 @@
     </el-row>
     <el-row>
       <div class="contenedor-body my-5">
+        <label
+          >Seleccione los comprobantes que se incluirán en esta
+          programación</label
+        >
         <el-table
           ref="multipleTable"
           :data="tableData"
@@ -32,15 +36,22 @@
           @selection-change="handleSelectionChange"
         >
           <el-table-column type="selection" width="55"> </el-table-column>
-          <el-table-column label="Fecha" width="120">
-            <template slot-scope="scope">{{ scope.row.date }}</template>
+          <el-table-column label="Fecha">
+            <template slot-scope="scope">{{ scope.row.vencimiento }}</template>
           </el-table-column>
-          <el-table-column property="name" label="Nombre" width="120">
+          <el-table-column property="proveedor" label="Proveedor">
           </el-table-column>
           <el-table-column
             property="comprobante"
             label="Comprobante"
             show-overflow-tooltip
+          >
+          </el-table-column>
+          <el-table-column property="moneda" label="Moneda"> </el-table-column>
+          <el-table-column
+            property="importe"
+            label="Importe"
+            style="text-align: right"
           >
           </el-table-column>
         </el-table>
@@ -56,39 +67,36 @@ export default {
     return {
       tableData: [
         {
-          date: "2016-05-03",
-          name: "Pharma salud",
+          idComprobante: 1,
+          proveedor: "Pharma salud",
           comprobante: "Factura E551-016",
+          vencimiento: "2021-11-15",
+          moneda: "SOLES",
+          importe: "120, 012.85",
         },
         {
-          date: "2016-05-02",
-          name: "Pharma salud",
-          comprobante: "Recibo H. E551-016",
+          idComprobante: 2,
+          proveedor: "Pharma salud",
+          comprobante: "Factura E551-016",
+          vencimiento: "2021-11-15",
+          moneda: "SOLES",
+          importe: "120, 012.85",
         },
         {
-          date: "2016-05-04",
-          name: "Pharma salud",
+          idComprobante: 3,
+          proveedor: "Pharma salud",
           comprobante: "Factura E551-016",
+          vencimiento: "2021-11-15",
+          moneda: "SOLES",
+          importe: "120, 012.85",
         },
         {
-          date: "2016-05-01",
-          name: "Pharma salud",
+          idComprobante: 4,
+          proveedor: "Pharma salud",
           comprobante: "Factura E551-016",
-        },
-        {
-          date: "2016-05-08",
-          name: "Pharma salud",
-          comprobante: "Factura E551-016",
-        },
-        {
-          date: "2016-05-06",
-          name: "Pharma salud",
-          comprobante: "Factura E551-016",
-        },
-        {
-          date: "2016-05-07",
-          name: "Pharma salud",
-          comprobante: "Factura E551-016",
+          vencimiento: "2021-11-15",
+          moneda: "SOLES",
+          importe: "120, 012.85",
         },
       ],
       multipleSelection: [],
