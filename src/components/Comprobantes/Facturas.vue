@@ -14,7 +14,7 @@
                                 <p>Fecha</p>
                             </el-col>
                             <el-col :md="6">
-                                <p>Estado</p>
+                                <p>Tipo</p>
                             </el-col>
                         </el-row>
                         <el-row :gutter="10" class="d-flex justify-content-end" style="margin-top: -20px !important;">
