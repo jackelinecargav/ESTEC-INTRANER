@@ -66,22 +66,23 @@
               v-for="item of listaArchivos"
               :key="'archivo ' + item.numeroArchivo"
             >
-              <td>
+              <td style="text-align:center">
                 <template>{{ item.numeroArchivo }}</template>
               </td>
-              <td>
+              <td style="text-align:center">
                 <template>{{ item.fechaProgramacion }}</template>
               </td>
-              <td>
-                <template>{{ item.banco }}</template>
+              <td style="text-align:center">
+                <template v-if="item.banco==39">{{ 'BBVA' }}</template>
+                <template v-else>{{ 'SCOTIABANK' }}</template>
               </td>
-              <td>
+              <td  style="text-align:center">
                 <template>{{ item.cantidad }}</template>
               </td>
-              <td>
+              <td  style="text-align:center">
                 <template>{{ item.usuario }}</template>
               </td>
-              <td>
+              <td style="text-align:center">
                 <template v-if="item.estado == ESTADO_PROGRAMADO">{{
                   "Programado"
                 }}</template>
@@ -108,9 +109,9 @@
         width="60%"
       >
         <nuevo></nuevo>
-        <spam slot="footer" class="dialog-footer">
+        <span slot="footer" class="dialog-footer">
           <el-button @click="mostrarPopup = false">Cancel</el-button>
-          <el-button type="primary">Generar programacion</el-button></spam
+          <el-button type="primary">Generar programacion</el-button></span
         >
       </el-dialog>
     </div>
@@ -121,6 +122,8 @@
 import TituloHeader from "../comun/TituloHeader.vue";
 import Nuevo from "./Nuevo.vue";
 import moment from "moment";
+import constantes from "../../store/constantes";
+import axios from "axios";
 export default {
   components: { TituloHeader, Nuevo },
   data() {
@@ -139,22 +142,22 @@ export default {
       Estado: null,
       mostrarPopup: false,
       listaArchivos: [
-        {
-          numeroArchivo: "1",
-          fechaProgramacion: moment(new Date()).format("DD-MM-YYYY"),
-          banco: "BBVA",
-          cantidad: "4",
-          usuario: "AAA",
-          estado: "4",
-        },
-        {
-          numeroArchivo: "2",
-          fechaProgramacion: moment(new Date()).format("DD-MM-YYYY"),
-          banco: "SCOTIABANK",
-          cantidad: "5",
-          usuario: "CBM",
-          estado: "4",
-        },
+        // {
+        //   numeroArchivo: "1",
+        //   fechaProgramacion: moment(new Date()).format("DD-MM-YYYY"),
+        //   banco: "BBVA",
+        //   cantidad: "4",
+        //   usuario: "AAA",
+        //   estado: "4",
+        // },
+        // {
+        //   numeroArchivo: "2",
+        //   fechaProgramacion: moment(new Date()).format("DD-MM-YYYY"),
+        //   banco: "SCOTIABANK",
+        //   cantidad: "5",
+        //   usuario: "CBM",
+        //   estado: "4",
+        // },
       ],
       options: [
         {
@@ -175,7 +178,11 @@ export default {
         },
       ],
       value: "",
+
     };
+  },
+  mounted(){
+    this.BuscarFacturas()
   },
   methods: {
     obtenerPendientes() {
@@ -187,8 +194,44 @@ export default {
       });
       window.open(routeData.href, "_blank");
     },
+    BuscarFacturas() {
+      let fechaInicio =
+        this.fecha == null ? null : moment(this.fecha[0]).format("YYYY-MM-DD");
+      let fechaFin =
+        this.fecha == null ? null : moment(this.fecha[1]).format("YYYY-MM-DD");
+      console.log(fechaInicio);
+      console.log(fechaFin);
+
+      let url = constantes.rutaAdmin + "/consulta-lote-archivo";
+      axios
+        .get(url, {
+          params: {
+            // usuariosresponsable: localStorage.getItem("User"),
+            // idArchivo: this.idarchivo,
+            // tipoComprobante: this.tipoComprobanteSeleccionado,
+            // fecInicio: fechaInicio,
+            // fecFin: fechaFin,
+          },
+        })
+        .then((response) => {
+          console.log("Mostrando la lista de comprobantes");
+          console.log(response.data.resultado);
+          let array = new Array()
+          response.data.resultado.forEach((item) =>{
+            let objeto = new Object();
+            objeto.numeroArchivo= item.idArchivoBanco,
+            objeto.fechaProgramacion= item.fechaProgramacion,
+            objeto.banco= item.id009Banco,
+            objeto.cantidad= item.cantidadRegistros,
+            objeto.usuario=  item.usuarioRegistro,
+            objeto.estado= item.id001Estado,
+            array.push(objeto)
+          })
+          this.listaArchivos = array;
+        })
+        .catch((e) => console.log(e));
+    },
   },
 };
 </script>
 
-<style lang="scss" scoped></style>

@@ -31,7 +31,7 @@
         >
         <el-table
           ref="multipleTable"
-          :data="tableData"
+          :data="listaComprobantes"
           style="width: 100%"
           @selection-change="handleSelectionChange"
         >
@@ -62,6 +62,10 @@
 </template>
 
 <script>
+import moment from 'moment';
+import constantes from "../../store/constantes";
+import axios from "axios";
+
 export default {
   data() {
     return {
@@ -111,7 +115,14 @@ export default {
         },
       ],
       value: "",
+
+      tipoComprobanteSeleccionado: 24,
+      listaComprobantes: [],
+      fecha: new Date(),
     };
+  },
+  mounted(){
+    this.BuscarFacturas()
   },
   methods: {
     toggleSelection(rows) {
@@ -125,6 +136,61 @@ export default {
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
+    },
+    crearArchivoLote(){
+      let url = constantes.rutaAdmin + "/nuevo-lote-archivo";
+      let nuevoArchivo = new Object();
+      nuevoArchivo.fechaProgramacion = this.fecha;
+      nuevoArchivo.idUsuarioRegistro = localStorage.getItem("idUsuario");
+      nuevoArchivo.usuarioRegistro = localStorage.getItem("User");
+      nuevoArchivo.id009Banco = this.value;
+      // listaArchivoBancoDetalle;
+	
+      axios
+        .post(url, nuevoArchivo).then((response) => {
+          console.log("console");
+        });
+    },
+    BuscarFacturas() {
+      let fechaInicio =
+        this.fecha == null ? null : moment(this.fecha[0]).format("YYYY-MM-DD");
+      let fechaFin =
+        this.fecha == null ? null : moment(this.fecha[1]).format("YYYY-MM-DD");
+      console.log(fechaInicio);
+      console.log(fechaFin);
+
+      let url = constantes.rutaAdmin + "/consultar-comprobante";
+      axios
+        .get(url, {
+          params: {
+            // usuariosresponsable: localStorage.getItem("User"),
+            // numeroFac: this.numeroFac,
+            // fecInicio: fechaInicio,
+            // nroDocumento:
+            //   this.numeroRuc != null && this.numeroRuc.length > 0
+            //     ? this.numeroRuc
+            //     : null,
+            // fecFin: fechaFin,
+            // tipoComprobante: this.tipoComprobanteSeleccionado,
+          },
+        })
+        .then((response) => {
+          console.log("Mostrando la lista de comprobantes");
+          console.log(response.data.result);
+          let array = new Array()
+          response.data.result.forEach((item) =>{
+            let objeto = new Object();
+            objeto.idComprobante= item.idComprobante,
+            objeto.proveedor= item.proveedorNombre,
+            objeto.comprobante= item.nombreTipoComprobante +' '+ item.serie +' - '+ item.numero,
+            objeto.vencimiento= item.fechaVencimiento.slice(0, 10),
+            objeto.moneda=  item.nombreMoneda,
+            objeto.importe= item.importeTotal,
+            array.push(objeto)
+          })
+          this.listaComprobantes = array;
+        })
+        .catch((e) => console.log(e));
     },
   },
 };

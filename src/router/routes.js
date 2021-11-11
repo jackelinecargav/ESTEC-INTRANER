@@ -96,7 +96,6 @@ export const routes = [
                 path: ':name',
                 component: Sets,
                 props: true,
-
             }
         ]
     },
@@ -105,7 +104,6 @@ export const routes = [
         name: 'Charts',
         component: { render (c) { return c('router-view') }},
         children:[
-
             {
                 path: '/components/chartjs',
                 component: ChartJS,
