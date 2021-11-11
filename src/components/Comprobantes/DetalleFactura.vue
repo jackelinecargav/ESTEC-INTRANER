@@ -278,7 +278,7 @@
                                                         <tbody style="margin-left: 30px">
                                                             <tr>
                                                                 <td class="alinieado-izquierda">
-                                                                    <div><b>Sub total Ventas </b></div>
+                                                                    <div><b>Sub Total Ventas </b></div>
                                                                 </td>
                                                                 <td><b> : </b></td>
                                                                 <td class="alinieado-derecha">
@@ -665,7 +665,7 @@
                                                 </tr>
                                             </tbody>
                                         </table>
-                                </div>
+                                </div><br/>
 
                                 <div id="detalle" class="detalle">
                                     <div class="py-1">
@@ -673,7 +673,51 @@
                                             Detalle
                                         </h4>
                                         <hr />
+                                <div class="total-detalle" style="margin: 3%;">
+                                        <table width="100%" style="margin: auto">
+                                            <tbody>
+                                                <tr>
+                                                    <td style="width: 25%;">
+                                                        <div><b>Sub Total Ventas </b></div>
+                                                    </td>
+                                                    <td style="width: 5%;"><b> : </b></td>
+                                                    <td><div>{{ subTotalV }}</div></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><div><b>Anticipios </b></div></td>
+                                                    <td><b> : </b></td>
+                                                    <td><div>{{ AnticipiosV}}</div></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><div><b>Descuentos </b></div></td>
+                                                    <td><b> : </b></td>
+                                                    <td><div>{{ DescuentosV}}</div></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b>Valor de Ventas </b>                                                   </td>
+                                                    <td><b> : </b></td>
+                                                    <td>{{ ValordeV}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b>IGV </b></td>
+                                                    <td><b> : </b></td>
+                                                    <td> {{ IgvV}} </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b>Otros Cargos </b></td>
+                                                    <td><b> : </b></td>
+                                                    <td>{{ OtrosCargosV}} </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b>Importe Total </b>
+                                                    </td>
+                                                    <td><b> : </b></td>
+                                                    <td> {{ ImporteTotalV }} </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
+                                    </div><br/>
                                     <table width="100%" style="margin-top: -40px">
                                         <tbody>
                                             <tr>
@@ -704,74 +748,7 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <div class="total-detalle">
-                                                        <br /><br /><br />
-                                                        <table width="100%" style="margin: auto">
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td class="alinieado-izquierda">
-                                                                        <div><b>Sub total Ventas </b></div>
-                                                                    </td>
-                                                                    <td><b> : </b></td>
-                                                                    <td class="alinieado-derecha">
-                                                                        <div>{{ subTotalV }}</div>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="alinieado-izquierda">
-                                                                        <div><b>Anticipios </b></div>
-                                                                    </td>
-                                                                    <td><b> : </b></td>
-                                                                    <td class="alinieado-derecha">
-                                                                        <div>{{ AnticipiosV}}</div>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="alinieado-izquierda">
-                                                                        <div><b>Descuentos </b></div>
-                                                                    </td>
-                                                                    <td><b> : </b></td>
-                                                                    <td class="alinieado-derecha">
-                                                                        <div>{{ DescuentosV}}</div>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="alinieado-izquierda">
-                                                                        <b>Valor de Ventas </b>
-                                                                    </td>
-                                                                    <td><b> : </b></td>
-                                                                    <td class="alinieado-derecha">
-                                                                        {{ ValordeV}}
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="alinieado-izquierda"><b>IGV </b></td>
-                                                                    <td><b> : </b></td>
-                                                                    <td class="alinieado-derecha">
-                                                                        {{ IgvV}}
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="alinieado-izquierda">
-                                                                        <b>Otros Cargos </b>
-                                                                    </td>
-                                                                    <td><b> : </b></td>
-                                                                    <td class="alinieado-derecha">
-                                                                        {{ OtrosCargosV}}
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="alinieado-izquierda">
-                                                                        <b>Importe Total </b>
-                                                                    </td>
-                                                                    <td><b> : </b></td>
-                                                                    <td class="alinieado-derecha">
-                                                                        {{ ImporteTotalV }}
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
+                                             
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -840,86 +817,7 @@
                                 <div></div>
                             </el-tab-pane>
                             <el-tab-pane label="Contabilización" name="second" :disabled="mostrarContabilidad">
-                                <div><br>
-                                    <el-row :gutter="10">
-                                      <el-col :xs="24" :md="3" style="text-align: center;">
-                                        Concepto: 
-                                      </el-col>
-                                      <el-col :xs="24" :md="19">
-                                        <el-input v-model="conceptoText" maxlength="250" disabled></el-input>
-                                      </el-col>
-                                    </el-row><br>
-                                    <el-row :gutter="10">
-                                        <el-col :xs="24" :md="3">
-                                            <el-checkbox v-model="detraccion">Detracción :</el-checkbox>
-                                        </el-col>
-                                        <el-col :xs="24" :md="8">
-                                                <el-select v-model="value" placeholder="Selecione" :disabled="!detraccion">
-                                                    <el-option v-for="item in catalogDetracciones" :key="item.cadebus" :label="item.tclave" :value="item.cadebus">
-                                                    </el-option>
-                                                </el-select>
-                                        </el-col>
-                                        <el-col :xs="24" :md="4" style="margin-left: 10%;">
-                                            <el-checkbox v-model="igvAfecto">Afecto IGV</el-checkbox>
-                                        </el-col>
-                                    </el-row>
-                                    <div class="py-1">
-                                        <h4 class="card-title tituloTab">
-                                            Distribución de Gasto
-                                            <el-checkbox v-model="distriGasto" class="derecha">Única</el-checkbox>
-                                        </h4>
-                                        <hr />
-                                    </div>
-                                    <div>
-                                        <table id="example2" class="table" width="95%" height="95%">
-                                            <tbody>
-                                                <tr v-for="item of numeroItems" :key="'Gasto ' + item.numeros">
-                                                    <td width="10%">Cta.Contable {{ item.numeros }}</td>
-                                                    <td width="15%">
-                                                        <el-input type="number" maxlength="12" class="input" v-model="item.cc"></el-input>
-                                                    </td>
-                                                    <td width="10%">Centro de Costos</td>
-                                                    <td width="15%">
-                                                        <el-input type="number" maxlength="3" class="input" v-model="item.costo"></el-input>
-                                                    </td>
-                                                    <td width="10%">Importe</td>
-                                                    <td width="15%">
-                                                        <el-input type="number" class="input" v-model="item.importe"></el-input>
-                                                    </td>
-
-                                                    <td width="10%" v-if="distriGasto == false"><u style="font-size: 20px" @click="agregarItem()">+</u></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div id="cabecera" 
-                                    >
-                                        <el-row :gutter="10">
-                                            <el-col :xs="24" :md="8">
-                                                <div class="col text-right">
-                                                    <el-button type="danger" plain @click="Provisionar(2)">
-                                                        Vista Previa
-                                                        <b-icon-arrow-down></b-icon-arrow-down>
-                                                    </el-button>
-                                                </div>
-                                            </el-col>
-                                            <el-col :xs="24" :md="8">
-                                                <el-button type="primary" plain @click="Provisionar(1)">Provisionar</el-button>
-                                            </el-col>
-                                            <el-col :xs="24" :md="8">
-                                                <el-button  type="warning" @click="IngresarObservacionAsiento=true" plain >Observar</el-button>
-                                            </el-col>
-                                        </el-row>
-                                        <br />
-                                    </div>
-                                     <el-dialog title="Observar" :visible.sync="IngresarObservacionAsiento" width="20%">
-                                    <el-input type="textarea" autosize v-model="observacionAsiento">
-                                    </el-input>
-                                    <span slot="footer" class="dialog-footer">
-                                        <el-button type="primary" @click="GrabarObservar()">Guardar</el-button>
-                                    </span>
-                                </el-dialog>
-                                </div>
+                                <Contabilizacion/>
                             </el-tab-pane>
                         </el-tabs>
                     </div>
@@ -935,9 +833,11 @@ import moment from "moment";
 import TituloHeader from "../comun/TituloHeader.vue";
 import axios from "axios";
 import constantes from "../../store/constantes";
+import Contabilizacion from './Contabilizacion.vue';
 export default {
     components: {
         TituloHeader,
+        Contabilizacion,
     },
     data() {
         return {
@@ -951,13 +851,6 @@ export default {
                 label: 'Option1'
             }],
             value: '',
-
-            numeroItems: [{
-                numeros: 1,
-                importe: null,
-                cc: null,
-                costo: null
-            }],
             fechaActual:null,
             activeName: "first",
 
@@ -992,80 +885,15 @@ export default {
             observacionAsiento:null,
             //armar asiento 
             idComprobante: null,
-            igvAfecto: true,
         };
     },
     created() {
       var fechahoy= new Date()
       var mes = parseInt(fechahoy.getMonth())+1
       this.fechaActual = fechahoy.getUTCDate()+"/"+mes+"/"+fechahoy.getFullYear()
-        this.consultar();
-        this.obtenerCatalogoDetracciones();
-        console.log("numero converido " + this.financial(30));
-        console.log("numero converido plata " + this.milesNumeros(30038488484.56));
+      this.consultar();
     },
     methods: {
-      GrabarObservar(){
-        
-            let url = constantes.rutaAdmin + "/consulta-traza-observacion"
-            axios
-                .get(url, {
-                    params: {
-                        idComprobante: this.detalle.idComprobante
-                    },
-                })
-                .then((response) => {
-                    this.nomResponsable=response.data.result                    
-                let url = constantes.rutaAdmin + "/estado-factura"
-                  axios.get(url, {
-                          params: {
-                              idComprobante: this.detalle.idComprobante,
-                              estado: 9,
-                              id008Trazabilidad: 37,
-                              observacion: this.observacionAsiento,
-                              usuarioModificador: localStorage.getItem("User"),
-                              usuarioResponsable: this.nomResponsable,
-                          },
-                      })
-                      .then((response) => {
-                          console.log(response);
-                          this.consultar();
-                          if (response.data.esCorrecto) {
-                              this.observacion = " ";
-                          } else {
-                              this.$swal({
-                                  icon: "error",
-                                  title: "Error",
-                                  text: "Intentelo más tarde",
-                              });
-                          }
-                      })
-                      .catch((e) => {
-                          console.log(e);
-                      });
-
-                })
-                .catch((e) => {
-                    console.log(e);
-
-                 });
-
-           
-      },
-      obtenerCatalogoDetracciones(){
-        let url = constantes.rutaAdmin + "/catalogo-contabilidad";
-            axios
-                .get(url, {
-                    params: {
-                        idParametro: '28',
-                    },
-                })
-                .then((response) => {
-                  this.catalogDetracciones = response.data.result;
-                  console.warn(response)
-                })
-                .catch((e) => console.log(e));
-      },
         milesNumeros(numero) {
             return numero.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         },
@@ -1086,41 +914,6 @@ export default {
         },
         formatoFecha(valor) {
             return moment(valor).format("DD-MM-YYYY");
-        },
-        Provisionar(valor){
-          let asientoData = {};
-            asientoData.id_comprobante=this.detalle.idComprobante,
-            asientoData.fecha_asiento= this.fechaActual ,
-            asientoData.concepto= this.detalle.listaComprobanteDetalle[0].descripcion,
-            asientoData.moneda= this.detalle.nombreMoneda,
-            asientoData.conversion= "S",
-            asientoData.tipo_conversion= "V",
-            asientoData.tipo_cambio= 4.02,
-            asientoData.estado= 2
-            asientoData.afectoTipoComprobante = this.detalle.id007TipoComprobante
-            asientoData.afectoIgv = this.igvAfecto
-            asientoData.afectoDetraccion= this.detraccion
-            axios.post(constantes.rutaAdmin + "/provisionar-asiento", asientoData).then(response=>{
-              console.error(response)
-            }).catch(e=>{
-              this.alertClose('error','Ocurrió un error al enviar encuesta')
-              console.log(e)});
-            if(valor==2){
-              this.obtenerpdf()
-            }else{
-              alert("guardado con exito")    
-            }
-                    
-        },
-        obtenerpdf(){
-          if (this.igvAfecto) {
-                var igv = 1
-            } else {
-                var igv = 0;
-            }
-            let url = constantes.rutaAdmin + "/visualizar-asiento/" + this.detalle.idComprobante + "/" + igv+ "/" +this.detraccion;
-            let documento = url;
-            window.open(documento, "_blank");
         },
         consultar() {
             let url = constantes.rutaAdmin + "/consultar-comprobante";
