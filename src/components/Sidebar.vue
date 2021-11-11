@@ -39,7 +39,7 @@
                             </template>
                             <template v-else>
                                 <SidebarNavItem :classes="item.class" :key="index">
-                                    <SidebarNavLink  :name="item.name+'c'" :url="item.url" :icon="item.icon" :badge="item.badge" :variant="item.variant"/>
+                                    <SidebarNavLink :title="item.titulo" :name="item.name" :url="item.url" :icon="item.icon" :badge="item.badge" :variant="item.variant"/>
                                 </SidebarNavItem>
                             </template>
                         </template>
@@ -70,66 +70,65 @@ export default {
     name: 'sidebar',
     data () {
         return {
-             listaOpciones: [
-        {
-          name: "Administracion",
-          url: "/",
-          icon: "el-icon-setting",
-          children: [
+        listaOpciones: [
             {
-              name: "Proveedores",
-              titulo: "Proveedores",
-              url: "/menu/miCuenta",
-              icon: "el-icon-user",
-            },
-          ],
-        },
-        {
-          name: "Comprobantes ",
-          url: "/",
-          icon: "el-icon-document-copy",
-          children: [
-            {
-              name: "Pendientes",
-              titulo: "Pendientes",
-              url: "/facturas",
-              icon: "el-icon-folder-opened",
-            },
-            {
-              name: "Facturas Físicas",
-              titulo: "Facturas Físicas",
-              url: "/facturasFisicas",
-              icon: "el-icon-document",
-            }
-          ],
-        },
-        {
-          name: "Bancos",
-          url: "/",
-          icon: "el-icon-document-copy",
-          children: [
-            {
-              name: "ArchivoBandeja",
-              titulo: "Bandeja",
-              url: "/facturas",
-              icon: "el-icon-folder-opened",
-            },
-            {
-              name: "ArchivoNuevo",
-              titulo: "Nuevo",
-              url: "/facturasFisicas",
-              icon: "el-icon-document",
-            }
-          ],
-        },
-         {
-            name: "Cerrar Sesión",
-            titulo: "Cerrar Sesión",
+            name: "Administracion",
             url: "/",
-            icon: "el-icon-circle-close",
-        },
-      ],
-            
+            icon: "el-icon-setting",
+            children: [
+                {
+                name: "Proveedores",
+                titulo: "Proveedores",
+                url: "/menu/miCuenta",
+                icon: "el-icon-user",
+                },
+            ],
+            },
+            {
+            name: "Comprobantes ",
+            url: "/",
+            icon: "el-icon-document-copy",
+            children: [
+                {
+                name: "Pendientes",
+                titulo: "Pendientes",
+                url: "/facturas",
+                icon: "el-icon-folder-opened",
+                },
+                {
+                name: "Facturas Físicas",
+                titulo: "Facturas Físicas",
+                url: "/facturasFisicas",
+                icon: "el-icon-document",
+                }
+            ],
+            },
+            {
+            name: "Bancos",
+            url: "/",
+            icon: "el-icon-document-copy",
+            children: [
+                {
+                name: "ArchivoBandeja",
+                titulo: "Bandeja",
+                url: "/facturas",
+                icon: "el-icon-folder-opened",
+                },
+                {
+                name: "ArchivoNuevo",
+                titulo: "Nuevo",
+                url: "/facturasFisicas",
+                icon: "el-icon-document",
+                }
+            ],
+            },
+            {
+                name: "Cerrar Sesión",
+                titulo: "Cerrar Sesión",
+                url: "/auth/login",
+                icon: "el-icon-circle-close",
+            },
+         ],
         }
     },
     props: {
