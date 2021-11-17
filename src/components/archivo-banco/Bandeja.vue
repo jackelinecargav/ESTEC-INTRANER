@@ -92,7 +92,7 @@
               </td>
               <td>
                 <template>
-                  <el-button @click="verDetalle(item.idArchivo)" type="text"
+                  <el-button @click="verDetalle(item.numeroArchivo)" type="text"
                     >Detalle</el-button
                   >
                 </template>
@@ -188,9 +188,9 @@ export default {
     obtenerPendientes() {
       console.log("Nuevo log");
     },
-    verDetalle() {
+    verDetalle(val) {
       let routeData = this.$router.resolve({
-        path: "/components/archivo-banco/DetalleArchivo",
+        path: "/components/archivo-banco/DetalleArchivo/"+val,
       });
       window.open(routeData.href, "_blank");
     },

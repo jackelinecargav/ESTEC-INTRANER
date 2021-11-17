@@ -64,13 +64,13 @@
           </thead>
           <tbody>
             <tr
-              v-for="item of listaArchivos"
-              :key="'archivo ' + item.idArchivoDetalle"
+              v-for="item of listaLoteDetalle"
+              :key="'archivo ' + item.idArchivoBancoDetalle"
             >
-              <td>
-                <template>{{ item.comprobante }}</template>
+              <td style="text-align: center">
+                <template>{{ item.idComprobante }}</template>
               </td>
-              <td>
+              <td style="text-align: center">
                 <template>{{ item.proveedor }}</template>
               </td>
               <td style="text-align: center">
@@ -80,7 +80,7 @@
                 <template>{{ item.moneda }}</template>
               </td>
               <td style="text-align: right">
-                <template>{{ item.importe }}</template>
+                <template>{{ item.importe | currency("")}}</template>
               </td>
               <td style="text-align: right">
                 <template><div>{{ item.estado }}</div></template>
@@ -92,7 +92,7 @@
                 <template v-if="item.estado == ESTADO_PENDIENTE">{{
                   "Pendiente"
                 }}</template> -->
-                  <el-button style="width: 100%" type="text">Detalle</el-button>
+                  <el-button style="width: 100%" type="text" @click="verDetalle(item.idComprobante)">Detalle</el-button>
               </td>
               <td>
                 <template>
@@ -116,6 +116,8 @@
 import TituloHeader from "../comun/TituloHeader.vue";
 import Nuevo from "./Nuevo.vue";
 import moment from "moment";
+import constantes from "../../store/constantes";
+import axios from "axios";
 export default {
   components: { TituloHeader, Nuevo },
   data() {
@@ -133,34 +135,7 @@ export default {
       fechaFin: null,
       Estado: null,
       mostrarPopup: false,
-      listaArchivos: [
-        {
-          idArchivoDetalle: 1,
-          proveedor: "Pharma salud",
-          comprobante: "Factura E551-016",
-          vencimiento: "2021-11-15",
-          moneda: "SOLES",
-          importe: "120, 012.85",
-          estado: "Pendiente Pago",
-        },
-        {
-          idArchivoDetalle: 2,
-          proveedor: "Pharma salud",
-          comprobante: "Factura E551-016",
-          vencimiento: "2021-11-15",
-          moneda: "SOLES",
-          importe: "120, 012.85",
-          estado: "Pendiente Pago",
-        },
-        {
-          idArchivoDetalle: 3,
-          proveedor: "Pharma salud",
-          comprobante: "Factura E551-016",
-          vencimiento: "2021-11-15",
-          moneda: "SOLES",
-          importe: "120, 012.85",
-          estado: "Pendiente Pago",
-        },
+      listaLoteDetalle: [
       ],
       options: [
         {
@@ -183,10 +158,38 @@ export default {
       value: "",
     };
   },
+  created(){
+    this.buscarArchivos()
+  },
   methods: {
     obtenerPendientes() {
       console.log("Nuevo log");
     },
+    verDetalle(val) {
+      let routeData = this.$router.resolve({
+        path: `/components/Comprobantes/DetalleFactura/${val}`
+      });
+      window.open(routeData.href, "_blank");
+    },
+    buscarArchivos(){
+      // http://localhost:8991/api/admin/consulta-lote-detalle-archivo?idArchivo=1
+      console.log(this.$route.params.idArchivo);
+      let url = constantes.rutaAdmin + "/consulta-lote-detalle-archivo";
+      axios
+        .get(url, {
+          params: {
+            // usuariosresponsable: localStorage.getItem("User"),
+            idArchivo: this.$route.params.idArchivo
+            // tipoComprobante: this.tipoComprobanteSeleccionado,
+            // fecInicio: fechaInicio,
+            // fecFin: fechaFin,
+          },
+        })
+        .then((response) => {
+          console.log(response);
+          this.listaLoteDetalle = response.data.resultado
+        })
+    }
   },
 };
 </script>

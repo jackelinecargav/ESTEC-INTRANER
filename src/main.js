@@ -21,7 +21,9 @@ import 'element-ui/lib/theme-chalk/index.css';
 import locale from 'element-ui/lib/locale/lang/es'
 import VueDataTables from 'vue-data-tables'
 
+import Vue2Filters from 'vue2-filters'
 
+Vue.use(Vue2Filters)
 Vue.use(VueSweetalert2);
 Vue.use(SweetModal);
 Vue.use(BootstrapVue)

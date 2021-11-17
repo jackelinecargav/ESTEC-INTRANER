@@ -59,7 +59,7 @@ export const routes = [
     { path : '/components/Comprobantes/DetalleFactura/:idComprobante', name: 'DetalleFactura', component: DetalleFactura, props:true },
     { path : '/components/archivo-banco/Bandeja', name: 'ArchivoBandeja', component: ArchivoBancoBandeja, props:true },
     { path : '/components/archivo-banco/Nuevo', name: 'ArchivoNuevo', component: ArchivoBancoNuevo, props:true },
-    { path : '/components/archivo-banco/DetalleArchivo', name: 'DetalleArchivo', component: ArchivoBancoDetalle, props:true },
+    { path : '/components/archivo-banco/DetalleArchivo/:idArchivo', name: 'DetalleArchivo', component: ArchivoBancoDetalle, props:true },
 
     // // UI Components
     { path : '/components/principal/bienvenido', name: 'bienvenido', component: Bienvenido, props:true },

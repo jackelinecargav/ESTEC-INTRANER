@@ -66,7 +66,7 @@
                                     <!-- <p>N° de pedido: {{props.row.}}</p>-->
                                     <p>Moneda: {{props.row.nombreMoneda}}</p>
                                     <p>IGV: {{props.row.importeIgv}}</p>
-                                    <p>Importe: {{props.row.importeTotal}}</p>
+                                    <p>Importe: {{ detalleOrden[0].importe | currency("") }}</p>
                                     <p>Estado: {{props.row.nombreEstado}}</p> 
                                     <p><el-button @click="verDetalle(props.row)">ver detalle</el-button></p>
                                 </template>
