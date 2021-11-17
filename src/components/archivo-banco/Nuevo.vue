@@ -57,6 +57,11 @@
         </el-table>
       </div>
     </el-row>
+      <span slot="footer"  style="display: flex; justify-content: flex-end;">
+        <el-button @click="$emit('show')">Cancel</el-button>
+        <el-button type="primary" @click="generarLote()">Generar programacion</el-button></span
+      >
+    
     <label></label>
   </div>
 </template>
@@ -125,6 +130,10 @@ export default {
     this.BuscarFacturas()
   },
   methods: {
+    generarLote() {
+      this.$emit('show');
+      this.crearArchivoLote();
+    },
     toggleSelection(rows) {
       if (rows) {
         rows.forEach((row) => {
@@ -137,18 +146,31 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
-    crearArchivoLote(){
+    crearArchivoLote() {
       let url = constantes.rutaAdmin + "/nuevo-lote-archivo";
       let nuevoArchivo = new Object();
-      nuevoArchivo.fechaProgramacion = this.fecha;
-      nuevoArchivo.idUsuarioRegistro = localStorage.getItem("idUsuario");
+      nuevoArchivo.fechaProgramacion = moment(this.fecha).format("YYYY-MM-DD");
+      nuevoArchivo.idUsuarioRegistro =( localStorage.getItem("idUsuario") != null)?  localStorage.getItem("idUsuario"): 1;
       nuevoArchivo.usuarioRegistro = localStorage.getItem("User");
       nuevoArchivo.id009Banco = this.value;
+      let array = new Array();
+      this.multipleSelection.forEach( item => {
+        let objeto = new Object();
+        objeto.idComprobante = item.idComprobante;
+        objeto.idUsuarioRegistro = 1
+        array.push(objeto);
+      })
+      nuevoArchivo.listaArchivoBancoDetalle = array;
       // listaArchivoBancoDetalle;
-	
+      console.log("Mostrando multiple seleccion");
+      console.log(this.multipleSelection);
+      
+
       axios
         .post(url, nuevoArchivo).then((response) => {
           console.log("console");
+          console.log(response);
+          location.reload();
         });
     },
     BuscarFacturas() {

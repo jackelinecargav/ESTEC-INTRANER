@@ -35,7 +35,7 @@
         </el-row>
         <el-row :gutter="10" style="display: flex; justify-content: flex-end;">
           <el-col :md="4">
-            <el-button type="primary" style="width: 100%; ">Buscar</el-button>
+            <el-button type="primary" style="width: 100%; " @click="BuscarFacturas">Buscar</el-button>
           </el-col>
           <el-col :md="4">
             <el-button
@@ -108,11 +108,7 @@
         title="Nueva programacion de pago"
         width="60%"
       >
-        <nuevo></nuevo>
-        <span slot="footer" class="dialog-footer">
-          <el-button @click="mostrarPopup = false">Cancel</el-button>
-          <el-button type="primary">Generar programacion</el-button></span
-        >
+        <nuevo @show="mostrarPopup = false"></nuevo>
       </el-dialog>
     </div>
   </div>
@@ -142,22 +138,6 @@ export default {
       Estado: null,
       mostrarPopup: false,
       listaArchivos: [
-        // {
-        //   numeroArchivo: "1",
-        //   fechaProgramacion: moment(new Date()).format("DD-MM-YYYY"),
-        //   banco: "BBVA",
-        //   cantidad: "4",
-        //   usuario: "AAA",
-        //   estado: "4",
-        // },
-        // {
-        //   numeroArchivo: "2",
-        //   fechaProgramacion: moment(new Date()).format("DD-MM-YYYY"),
-        //   banco: "SCOTIABANK",
-        //   cantidad: "5",
-        //   usuario: "CBM",
-        //   estado: "4",
-        // },
       ],
       options: [
         {
