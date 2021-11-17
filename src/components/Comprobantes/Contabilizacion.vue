@@ -134,6 +134,7 @@ export default {
         };
     },
     created() {
+        this.numeroItems[0].costo=100
       var fechahoy= new Date()
       var mes = parseInt(fechahoy.getMonth())+1
       this.fechaActual = fechahoy.getUTCDate()+"/"+mes+"/"+fechahoy.getFullYear()
@@ -213,8 +214,8 @@ export default {
         formatoFecha(valor) {
             return moment(valor).format("DD-MM-YYYY");
         },
-        Provisionar(valor){
-            this.consultarAsiento()            
+        async Provisionar(valor){
+           await this.consultarAsiento()            
             if(valor==2){
                 if(this.idAsiento != null || this.idAsiento != undefined){
               this.grabar()
@@ -225,26 +226,29 @@ export default {
             }else{
                 alert(this.idAsiento)
                if(this.idAsiento != null || this.idAsiento != undefined){
-                 this.$swal({
-                      icon: 'error',
-                      title: 'Error',
-                      text: "Debe ver la vista previa antes de provisionar"
-                });
-               }else{
-                this.cambiarEstadoComprobante(this.idAsiento)
+                this.cambiarEstadoComprobante()
                 this.$swal({
                     icon: "success",
                     text: "Provision exitosa",
                 });
+               }else{
+                this.$swal({
+                icon: 'error',
+                title: 'Error',
+                text: "Debe ver la vista previa antes de provisionar"
+                });
+
+               
                }}   
         },
-        cambiarEstadoComprobante(valorasiento){
+        cambiarEstadoComprobante(){
+            alert(this.idAsiento)
              let url = constantes.rutaAdmin + "/estado-factura";
             axios
                 .get(url, {
                     params: {
-                        idComprobante: 2,
                         estado: 12,
+                        idComprobante: this.idAsiento,
                         id008Trazabilidad: 30,
                         observacion: "ninguna",
                         usuarioModificador: localStorage.getItem("User"),
@@ -268,7 +272,9 @@ export default {
                 })
                 .then((response) => {
                     console.warn(response)
-                    this.idAsiento = response.data.id_asiento_provision
+                    alert(response.data.result[0].id_comprobante)
+                    this.idAsiento = response.data.result[0].id_comprobante
+                    alert(this.idAsiento + "consulta" +response)
                 })
                 .catch((e) => console.log(e));
         },
