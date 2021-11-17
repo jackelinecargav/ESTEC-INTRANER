@@ -142,7 +142,6 @@ export default {
     },
     methods: {
       GrabarObservar(){
-        
             let url = constantes.rutaAdmin + "/consulta-traza-observacion"
             axios
                 .get(url, {
@@ -185,8 +184,6 @@ export default {
                     console.log(e);
 
                  });
-
-           
       },
       obtenerCatalogoDetracciones(){
         let url = constantes.rutaAdmin + "/catalogo-contabilidad";
@@ -217,7 +214,66 @@ export default {
             return moment(valor).format("DD-MM-YYYY");
         },
         Provisionar(valor){
-          let asientoData = {};
+            this.consultarAsiento()            
+            if(valor==2){
+                if(this.idAsiento != null || this.idAsiento != undefined){
+              this.grabar()
+              this.obtenerpdf(this.idAsiento)
+                }else {
+                 this.obtenerpdf(this.idAsiento)   
+                }
+            }else{
+                alert(this.idAsiento)
+               if(this.idAsiento != null || this.idAsiento != undefined){
+                 this.$swal({
+                      icon: 'error',
+                      title: 'Error',
+                      text: "Debe ver la vista previa antes de provisionar"
+                });
+               }else{
+                this.cambiarEstadoComprobante(this.idAsiento)
+                this.$swal({
+                    icon: "success",
+                    text: "Provision exitosa",
+                });
+               }}   
+        },
+        cambiarEstadoComprobante(valorasiento){
+             let url = constantes.rutaAdmin + "/estado-factura";
+            axios
+                .get(url, {
+                    params: {
+                        idComprobante: 2,
+                        estado: 12,
+                        id008Trazabilidad: 30,
+                        observacion: "ninguna",
+                        usuarioModificador: localStorage.getItem("User"),
+                        usuarioResponsable: "TTT",
+                    },
+                })
+                .then((response) => {
+                    console.log(response);
+                })
+                .catch((e) => {
+                    console.log(e);
+                });
+        },
+        consultarAsiento(){
+        let url = constantes.rutaAdmin + "/consultar-asiento";
+            axios
+                .get(url, {
+                    params: {
+                        idComprobante: this.$route.params.idComprobante,
+                    },
+                })
+                .then((response) => {
+                    console.warn(response)
+                    this.idAsiento = response.data.id_asiento_provision
+                })
+                .catch((e) => console.log(e));
+        },
+        grabar(){
+            let asientoData = {};
             asientoData.id_comprobante=this.detalle.idComprobante,
             asientoData.fecha_asiento= this.fechaActual ,
             asientoData.concepto= this.conceptoText,
@@ -230,16 +286,11 @@ export default {
             asientoData.afectoIgv = this.igvAfecto
             asientoData.afectoDetraccion= this.detraccion
             axios.post(constantes.rutaAdmin + "/provisionar-asiento", asientoData).then(response=>{
-              console.error(response)
+              console.log(response)
+              this.idAsiento = response.result
             }).catch(e=>{
               this.alertClose('error','Ocurrió un error al enviar encuesta')
               console.log(e)});
-            if(valor==2){
-              this.obtenerpdf()
-            }else{
-              alert("guardado con exito")    
-            }
-                    
         },
         obtenerpdf(){
           if (this.igvAfecto) {

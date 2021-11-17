@@ -666,7 +666,6 @@
                                             </tbody>
                                         </table>
                                 </div><br/>
-
                                 <div id="detalle" class="detalle">
                                     <div class="py-1">
                                         <h4 class="card-title" style="text-align: left; color: #0078cf">
@@ -813,8 +812,7 @@
                                     <span slot="footer" class="dialog-footer">
                                         <el-button type="primary" @click="Rechazar()">Guardar</el-button>
                                     </span>
-                                </el-dialog>
-                                <div></div>
+                                </el-dialog>                                
                             </el-tab-pane>
                             <el-tab-pane label="Contabilización" name="second" :disabled="mostrarContabilidad">
                                 <Contabilizacion/>
