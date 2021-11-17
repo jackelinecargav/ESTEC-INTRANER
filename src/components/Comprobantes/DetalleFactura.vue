@@ -224,7 +224,24 @@
                                         </tbody>
                                     </table>
                             </div>
-
+                            <div id="cabecera" 
+                                >
+                                    <el-row :gutter="10">
+                                        <el-col :xs="24" :md="8">/</el-col>
+                                        <el-col :xs="24" :md="5">
+                                                <el-button type="primary" plain style="width: 100%"  @click="verFile(1,'dfac2a5727934ce28a7638364e3fd90a' )">
+                                                    Descargar ZIP / XML
+                                                </el-button>
+                                        </el-col>
+                                        <el-col :xs="24" :md="5">
+                                            <el-button type="primary" plain style="width: 100%"  @click="verFile(1, 'dfac2a5727934ce28a7638364e3fd90a')">Vista Comprobante PDF</el-button>
+                                        </el-col>
+                                        <el-col :xs="24" :md="5">
+                                            <el-button type="primary" plain style="width: 100%"  @click="verFile(1, 'dfac2a5727934ce28a7638364e3fd90a')"> Vista Informe </el-button>
+                                        </el-col>
+                                    </el-row>
+                                    <br />
+                                </div>
                             <div id="detalle" class="detalle">
                                 <table width="80%" style="margin-top: 40px">
                                     <tbody>
@@ -358,7 +375,7 @@
                                                         <el-button type="primary" @click="dialogEstado = true; accionEstadoBoton=1; this.observacion='Se ha aprobado el comprobante.'" style="width: 200px; height: 50px; font-size: 17px; margin-right: 5px" plain>Aprobar</el-button>
                                                     </el-col>
                                                     <el-col :xs="24" :md="12">
-                                                        <el-button type="danger" @click="dialogEstado = true; accionEstadoBoton=0" style="width: 200px; height: 50px; font-size: 17px" plain>Rechazar</el-button>
+                                                        <el-button type="danger" @click="dialogEstadoDenegado = true; accionEstadoBoton=0" style="width: 200px; height: 50px; font-size: 17px" plain>Rechazar</el-button>
                                                     </el-col>
                                                 </el-row>
                                             </div>
@@ -398,7 +415,7 @@
                                     <el-button type="primary" @click="IngresarObservacion= true">Si</el-button>
                                 </span>
                             </el-dialog>
-                            <el-dialog title="Estado" :visible.sync="dialogEstado" width="30%">
+                            <el-dialog title="Estado" :visible.sync="dialogEstadoDenegado" width="30%">
                                 <span>Seguro que desea rechazar el documento?</span>
                                 <span slot="footer" class="dialog-footer">
                                     <el-button type="danger" @click="dialogEstado = false">No</el-button>
@@ -892,6 +909,17 @@ export default {
       this.consultar();
     },
     methods: {
+        verFile(param, token) {
+            console.log("mostrando file clickeado");
+            var urlFiles =
+                constantes.rutaAdmin +
+                "/recuperarEntidadArchivo/1/0/" +
+                param +
+                "/" +
+                token;
+            console.log(urlFiles);
+            window.open(urlFiles, "_blank");
+        },
         milesNumeros(numero) {
             return numero.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         },

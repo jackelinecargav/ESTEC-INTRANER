@@ -89,7 +89,7 @@
                                 <th>Fecha</th>
                                 <th>RUC</th>
                                 <th>Proveedor</th>
-                                <th>N° de pedido</th>
+                                <th>N° de OC</th>
                                 <th>Moneda</th>
                                 <th>IGV</th>
                                 <th>Importe</th>
