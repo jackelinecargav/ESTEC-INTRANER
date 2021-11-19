@@ -54,7 +54,7 @@
     </div>
     <div id="cabecera" 
     >
-        <el-row :gutter="10">
+        <el-row :gutter="10" style="float: right;">
             <el-col :xs="24" :md="8">
                 <div class="col text-right">
                     <el-button type="danger" plain @click="Provisionar(2)">
@@ -63,11 +63,15 @@
                     </el-button>
                 </div>
             </el-col>
-            <el-col :xs="24" :md="8">
+            <el-col :xs="24" :md="9">
+                <div class="col text-right">
                 <el-button type="primary" plain @click="Provisionar(1)">Provisionar</el-button>
+                </div>
             </el-col>
-            <el-col :xs="24" :md="8">
+            <el-col :xs="24" :md="7">
+                <div class="col text-right">
                 <el-button  type="warning" @click="IngresarObservacionAsiento=true" plain >Observar</el-button>
+                </div>
             </el-col>
         </el-row>
         <br />
@@ -99,13 +103,7 @@ export default {
             detraccion: false,
             distriGasto: true,
             value: '',
-
-            numeroItems: [{
-                numeros: 1,
-                importe: null,
-                ctaContable: null,
-                costo: null
-            }],
+            numeroItems:[],
             fechaActual:null,
             activeName: "first",
 
@@ -134,6 +132,7 @@ export default {
         };
     },
     created() {
+        this.agregarItem()
         this.numeroItems[0].costo=100
       var fechahoy= new Date()
       var mes = parseInt(fechahoy.getMonth())+1
@@ -204,7 +203,7 @@ export default {
             this.numeroItems.push({
                 numeros: this.numeroItems.length + 1,
                 importe: null,
-                cc: null,
+                ctaContable: null,
                 costo: null
             })
         },
@@ -215,16 +214,15 @@ export default {
             return moment(valor).format("DD-MM-YYYY");
         },
         async Provisionar(valor){
-           await this.consultarAsiento()            
+           await this.consultarAsiento()  
             if(valor==2){
                 if(this.idAsiento != null || this.idAsiento != undefined){
-              this.grabar()
-              this.obtenerpdf(this.idAsiento)
-                }else {
-                 this.obtenerpdf(this.idAsiento)   
+                this.obtenerpdf(this.idAsiento)
+                }else {  
+                this.grabar()
+                this.obtenerpdf(this.idAsiento)
                 }
             }else{
-                alert(this.idAsiento)
                if(this.idAsiento != null || this.idAsiento != undefined){
                 this.cambiarEstadoComprobante()
                 this.$swal({
@@ -242,7 +240,6 @@ export default {
                }}   
         },
         cambiarEstadoComprobante(){
-            alert(this.idAsiento)
              let url = constantes.rutaAdmin + "/estado-factura";
             axios
                 .get(url, {
@@ -272,9 +269,7 @@ export default {
                 })
                 .then((response) => {
                     console.warn(response)
-                    alert(response.data.result[0].id_comprobante)
                     this.idAsiento = response.data.result[0].id_comprobante
-                    alert(this.idAsiento + "consulta" +response)
                 })
                 .catch((e) => console.log(e));
         },
@@ -284,6 +279,7 @@ export default {
             asientoData.fecha_asiento= this.fechaActual ,
             asientoData.concepto= this.conceptoText,
             asientoData.moneda= this.detalle.nombreMoneda,
+            asientoData.monto = this.detalle.monto
             asientoData.conversion= "S",
             asientoData.tipo_conversion= "V",
             asientoData.tipo_cambio= 4.02,
@@ -291,6 +287,7 @@ export default {
             asientoData.afectoTipoComprobante = this.detalle.id007TipoComprobante
             asientoData.afectoIgv = this.igvAfecto
             asientoData.afectoDetraccion= this.detraccion
+            asientoData.listDetalleDistribucion = this.numeroItems
             axios.post(constantes.rutaAdmin + "/provisionar-asiento", asientoData).then(response=>{
               console.log(response)
               this.idAsiento = response.result
@@ -304,7 +301,7 @@ export default {
             } else {
                 var igv = 0;
             }
-            let url = constantes.rutaAdmin + "/visualizar-asiento/" + this.detalle.idComprobante + "/" + igv+ "/" +this.detraccion+ "/" +this.numeroItems[0].ctaContable;
+            let url = constantes.rutaAdmin + "/visualizar-asiento/" + this.detalle.idComprobante + "/" + this.detalle.id007TipoComprobante;
             let documento = url;
             window.open(documento, "_blank");
         },
