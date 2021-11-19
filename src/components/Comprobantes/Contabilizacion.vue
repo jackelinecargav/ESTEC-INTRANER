@@ -16,7 +16,8 @@
         </el-col>
         <el-col :xs="24" :md="8">
                 <el-select v-model="porcentajeDetraccion" placeholder="Selecione" :disabled="!detraccion">
-                    <el-option v-for="item in catalogDetracciones" :key="item.cadebus" :label="item.tclave" :value="item.tporc">
+                    <el-option v-for="item in catalogDetracciones" :key="item.idDetraccion" 
+                    :label="item.tclave" :value="item.idDetraccion">
                     </el-option>
                 </el-select>
         </el-col>
@@ -222,6 +223,13 @@ export default {
         },
         Provisionar(valor){
             if(this.detraccion){ //si aplica detraccion
+            this.catalogDetracciones.forEach(item =>  
+               {
+                if(item.idDetraccion === this.porcentajeDetraccion){
+                this.porcentajeDetraccion = item.tporc
+                }  
+               } 
+            );
             var valorFinal = 100 - this.porcentajeDetraccion
             this.importeSinDetraccion =  valorFinal*this.detalle.importeTotal/100
             }else{
