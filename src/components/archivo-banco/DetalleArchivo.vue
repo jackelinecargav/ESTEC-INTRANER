@@ -68,7 +68,7 @@
               :key="'archivo ' + item.idArchivoBancoDetalle"
             >
               <td style="text-align: center">
-                <template>{{ item.idComprobante }}</template>
+                <template>{{ item.comprobante }}</template>
               </td>
               <td style="text-align: center">
                 <template>{{ item.proveedor }}</template>
@@ -187,7 +187,21 @@ export default {
         })
         .then((response) => {
           console.log(response);
-          this.listaLoteDetalle = response.data.resultado
+          let array = []
+          response.data.resultado.forEach(element => {
+            let objeto = {}
+            
+            objeto.comprobante = "F004 - 378"+element.idArchivoBancoDetalle;
+            objeto.idComprobante = element.idComprobante
+            objeto.idArchivoBancoDetalle = element.idArchivoBancoDetalle
+            objeto.proveedor = "CCH.SOLUCCIONES.ESTEC@YOPMAIL.COM";
+            objeto.vencimiento = "15-11-2021";
+            objeto.moneda = "SOLES";
+            objeto.importe = "1523.21";
+            objeto.estado = "PENDIENTE";
+            array.push(objeto)
+          });
+          this.listaLoteDetalle = array
         })
     }
   },

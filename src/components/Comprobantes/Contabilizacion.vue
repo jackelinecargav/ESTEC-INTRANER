@@ -54,7 +54,7 @@
     </div>
     <div id="cabecera" 
     >
-        <el-row :gutter="10">
+        <el-row :gutter="10" style="float: right;">
             <el-col :xs="24" :md="8">
                 <div class="col text-right">
                     <el-button type="danger" plain @click="Provisionar(2)">
@@ -63,16 +63,20 @@
                     </el-button>
                 </div>
             </el-col>
-            <el-col :xs="24" :md="8">
+            <el-col :xs="24" :md="9">
+                <div class="col text-right">
                 <el-button type="primary" plain @click="Provisionar(1)">Provisionar</el-button>
+                </div>
             </el-col>
-            <el-col :xs="24" :md="8">
+            <el-col :xs="24" :md="7">
+                <div class="col text-right">
                 <el-button  type="warning" @click="IngresarObservacionAsiento=true" plain >Observar</el-button>
+                </div>
             </el-col>
         </el-row>
         <br />
     </div>
-      <el-dialog title="Observar" :visible.sync="IngresarObservacionAsiento" width="20%">
+    <el-dialog title="Observar" :visible.sync="IngresarObservacionAsiento" width="20%">
     <el-input type="textarea" autosize v-model="observacionAsiento">
     </el-input>
     <span slot="footer" class="dialog-footer">
