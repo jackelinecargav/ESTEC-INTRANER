@@ -15,8 +15,8 @@
             <el-checkbox v-model="detraccion">Detracción :</el-checkbox>
         </el-col>
         <el-col :xs="24" :md="8">
-                <el-select v-model="value" placeholder="Selecione" :disabled="!detraccion">
-                    <el-option v-for="item in catalogDetracciones" :key="item.cadebus" :label="item.tclave" :value="item.cadebus">
+                <el-select v-model="porcentajeDetraccion" placeholder="Selecione" :disabled="!detraccion">
+                    <el-option v-for="item in catalogDetracciones" :key="item.cadebus" :label="item.tclave" :value="item.tporc">
                     </el-option>
                 </el-select>
         </el-col>
@@ -98,7 +98,7 @@ export default {
             conceptoText: null,
             detraccion: false,
             distriGasto: true,
-            value: '',
+            porcentajeDetraccion: null,
 
             numeroItems: [{
                 numeros: 1,
@@ -131,6 +131,8 @@ export default {
             //armar asiento 
             idComprobante: null,
             igvAfecto: true,
+            idAsientoProvision:null,
+            importeSinDetraccion:null
         };
     },
     created() {
@@ -214,18 +216,31 @@ export default {
         formatoFecha(valor) {
             return moment(valor).format("DD-MM-YYYY");
         },
-        async Provisionar(valor){
-           await this.consultarAsiento()            
+        Provisionar(valor){
+            alert(this.detraccion)
+            debugger
+            if(this.detraccion){ //si aplica detraccion
+            var valorFinal = 100 - this.porcentajeDetraccion
+            this.importeSinDetraccion =  valorFinal*this.detalle.importeTotal/100
+            }else{
+            this.importeSinDetraccion = this.detalle.importeTotal
+            }
+            alert(this.porcentajeDetraccion)
+            this.consultarAsiento()  
+            this.validaciones(valor)
+        },
+        validaciones(valor){
             if(valor==2){
-                if(this.idAsiento != null || this.idAsiento != undefined){
-              this.grabar()
-              this.obtenerpdf(this.idAsiento)
+                if(this.idAsientoProvision != null || this.idAsientoProvision != undefined){
+                this.obtenerpdf(this.idAsientoProvision) 
                 }else {
-                 this.obtenerpdf(this.idAsiento)   
+                this.grabar()
+                this.obtenerpdf(this.idAsientoProvision)
+                  
                 }
             }else{
-                alert(this.idAsiento)
-               if(this.idAsiento != null || this.idAsiento != undefined){
+                alert(this.idAsientoProvision)
+               if(this.idAsientoProvision != null || this.idAsientoProvision != undefined){
                 this.cambiarEstadoComprobante()
                 this.$swal({
                     icon: "success",
@@ -236,10 +251,8 @@ export default {
                 icon: 'error',
                 title: 'Error',
                 text: "Debe ver la vista previa antes de provisionar"
-                });
-
-               
-               }}   
+                });}
+                }  
         },
         cambiarEstadoComprobante(){
             alert(this.idAsiento)
@@ -267,19 +280,18 @@ export default {
             axios
                 .get(url, {
                     params: {
-                        idComprobante: this.$route.params.idComprobante,
+                        idComprobante: 2,
                     },
                 })
                 .then((response) => {
-                    console.warn(response)
-                    alert(response.data.result[0].id_comprobante)
-                    this.idAsiento = response.data.result[0].id_comprobante
-                    alert(this.idAsiento + "consulta" +response)
+                    this.idAsientoProvision = response.data.result[0].id_asiento_provision
                 })
                 .catch((e) => console.log(e));
+        return this.idAsiento
         },
         grabar(){
             let asientoData = {};
+            asientoData.importeSinDetraccion =this.importeSinDetraccion
             asientoData.id_comprobante=this.detalle.idComprobante,
             asientoData.fecha_asiento= this.fechaActual ,
             asientoData.concepto= this.conceptoText,
@@ -320,8 +332,8 @@ export default {
                     this.detalle = response.data.result[0];
                     console.warn(this.detalle)
                     this.conceptoText =
-                        this.detalle.proveedorNombreComercial + ", " + this.detalle.numero;
-                      this.numeroItems[0].importe = this.detalle.importeSubTotal
+                    this.detalle.proveedorNombreComercial + ", " + this.detalle.numero;
+                    this.numeroItems[0].importe = this.detalle.importeSubTotal
                 })
                 .catch((e) => console.log(e));
         },
