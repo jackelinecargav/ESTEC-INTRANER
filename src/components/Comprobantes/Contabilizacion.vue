@@ -221,15 +221,12 @@ export default {
             return moment(valor).format("DD-MM-YYYY");
         },
         Provisionar(valor){
-            alert(this.detraccion)
-            debugger
             if(this.detraccion){ //si aplica detraccion
             var valorFinal = 100 - this.porcentajeDetraccion
             this.importeSinDetraccion =  valorFinal*this.detalle.importeTotal/100
             }else{
             this.importeSinDetraccion = this.detalle.importeTotal
             }
-            alert(this.porcentajeDetraccion)
             this.consultarAsiento()  
             this.validaciones(valor)
         },
@@ -243,7 +240,6 @@ export default {
                   
                 }
             }else{
-                alert(this.idAsientoProvision)
                if(this.idAsientoProvision != null || this.idAsientoProvision != undefined){
                 this.cambiarEstadoComprobante()
                 this.$swal({
@@ -259,7 +255,6 @@ export default {
                 }  
         },
         cambiarEstadoComprobante(){
-            alert(this.idAsiento)
              let url = constantes.rutaAdmin + "/estado-factura";
             axios
                 .get(url, {
