@@ -15,8 +15,9 @@
             <el-checkbox v-model="detraccion">Detracción :</el-checkbox>
         </el-col>
         <el-col :xs="24" :md="8">
-                <el-select v-model="value" placeholder="Selecione" :disabled="!detraccion">
-                    <el-option v-for="item in catalogDetracciones" :key="item.cadebus" :label="item.tclave" :value="item.cadebus">
+                <el-select v-model="porcentajeDetraccion" placeholder="Selecione" :disabled="!detraccion">
+                    <el-option v-for="item in catalogDetracciones" :key="item.idDetraccion" 
+                    :label="item.tclave" :value="item.idDetraccion">
                     </el-option>
                 </el-select>
         </el-col>
@@ -33,10 +34,10 @@
     <div>
         <table id="example2" class="table" width="95%" height="95%">
             <tbody>
-                <tr v-for="item of numeroItems" :key="'Gasto ' + item.numeros">
-                    <td width="10%">Cta.Contable {{ item.numeros }}</td>
+                <tr v-for="item of numeroItems" :key="'Gasto ' + item.orden">
+                    <td width="10%">Cta.Contable {{ item.orden }}</td>
                     <td width="15%">
-                        <el-input type="number" maxlength="12" class="input" v-model="item.ctaContable"></el-input>
+                        <el-input type="number" maxlength="12" class="input" v-model="item.id_asiento_regla"></el-input>
                     </td>
                     <td width="10%">Centro de Costos</td>
                     <td width="15%">
@@ -44,7 +45,7 @@
                     </td>
                     <td width="10%">Importe</td>
                     <td width="15%">
-                        <el-input type="number" class="input" v-model="item.importe" :disabled="distriGasto"></el-input>
+                        <el-input type="number" class="input" v-model="item.debe" :disabled="distriGasto"></el-input>
                     </td>
 
                     <td width="10%" v-if="distriGasto == false"><u style="font-size: 20px" @click="agregarItem()">+</u></td>
@@ -102,13 +103,13 @@ export default {
             conceptoText: null,
             detraccion: false,
             distriGasto: true,
-            value: '',
+            porcentajeDetraccion: null,
 
             numeroItems: [{
-                numeros: 1,
-                importe: null,
-                ctaContable: null,
-                costo: null
+                orden: 1,
+                cc: null,
+                id_asiento_regla: null,
+                debe: null
             }],
             fechaActual:null,
             activeName: "first",
@@ -135,6 +136,8 @@ export default {
             //armar asiento 
             idComprobante: null,
             igvAfecto: true,
+            idAsientoProvision:null,
+            importeSinDetraccion:null
         };
     },
     created() {
@@ -206,10 +209,9 @@ export default {
       },
         agregarItem() {
             this.numeroItems.push({
-                numeros: this.numeroItems.length + 1,
-                importe: null,
-                cc: null,
-                costo: null
+                orden: this.numeroItems.length + 1,
+                debe: null,
+                cc: null
             })
         },
         handleClick(tab, event) {
@@ -218,18 +220,34 @@ export default {
         formatoFecha(valor) {
             return moment(valor).format("DD-MM-YYYY");
         },
-        async Provisionar(valor){
-           await this.consultarAsiento()            
+        Provisionar(valor){
+            if(this.detraccion){ //si aplica detraccion
+            this.catalogDetracciones.forEach(item =>  
+               {
+                if(item.idDetraccion === this.porcentajeDetraccion){
+                this.porcentajeDetraccion = item.tporc
+                }  
+               } 
+            );
+            var valorFinal = 100 - this.porcentajeDetraccion
+            this.importeSinDetraccion =  valorFinal*this.detalle.importeTotal/100
+            }else{
+            this.importeSinDetraccion = this.detalle.importeTotal
+            }
+            this.consultarAsiento()  
+            this.validaciones(valor)
+        },
+        validaciones(valor){
             if(valor==2){
-                if(this.idAsiento != null || this.idAsiento != undefined){
-              this.grabar()
-              this.obtenerpdf(this.idAsiento)
+                console.log("no borrar" + this.idAsientoProvision)
+                if(this.idAsientoProvision != null || this.idAsientoProvision != undefined){
+                this.obtenerpdf(this.idAsientoProvision)
                 }else {
-                 this.obtenerpdf(this.idAsiento)   
+                this.grabar()
+                this.obtenerpdf(this.idAsientoProvision)
                 }
             }else{
-                // alert(this.idAsiento)
-               if(this.idAsiento != null || this.idAsiento != undefined){
+               if(this.idAsientoProvision != null || this.idAsientoProvision != undefined){
                 this.cambiarEstadoComprobante()
                 this.$swal({
                     icon: "success",
@@ -240,10 +258,8 @@ export default {
                 icon: 'error',
                 title: 'Error',
                 text: "Debe ver la vista previa antes de provisionar"
-                });
-
-               
-               }}   
+                });}
+                }  
         },
         cambiarEstadoComprobante(){
              let url = constantes.rutaAdmin + "/estado-factura";
@@ -270,19 +286,19 @@ export default {
             axios
                 .get(url, {
                     params: {
-                        idComprobante: this.$route.params.idComprobante,
+                        idComprobante: 2,
                     },
                 })
                 .then((response) => {
-                    console.warn(response)
-                    // alert(response.data.result[0].id_comprobante)
-                    this.idAsiento = response.data.result[0].id_comprobante
-                    // alert(this.idAsiento + "consulta" +response)
+                console.warn(response)
+                this.idAsientoProvision = response.data.result[0].id_asiento_provision
                 })
                 .catch((e) => console.log(e));
+        return this.idAsiento
         },
         grabar(){
             let asientoData = {};
+            asientoData.importeSinDetraccion =this.importeSinDetraccion
             asientoData.id_comprobante=this.detalle.idComprobante,
             asientoData.fecha_asiento= this.fechaActual ,
             asientoData.concepto= this.conceptoText,
@@ -293,7 +309,11 @@ export default {
             asientoData.estado= 2
             asientoData.afectoTipoComprobante = this.detalle.id007TipoComprobante
             asientoData.afectoIgv = this.igvAfecto
+            asientoData.idTipoComporbante = this.detalle.id007TipoComprobante
+            asientoData.idTipoComporbante = this.detalle.proveedorNumeroDocumento
             asientoData.afectoDetraccion= this.detraccion
+            asientoData.listAsientoDetalle = this.numeroItems
+            console.log(asientoData)
             axios.post(constantes.rutaAdmin + "/provisionar-asiento", asientoData).then(response=>{
               console.log(response)
               this.idAsiento = response.result
@@ -322,9 +342,8 @@ export default {
                 .then((response) => {
                     this.detalle = response.data.result[0];
                     console.warn(this.detalle)
-                    this.conceptoText =
-                        this.detalle.proveedorNombreComercial + ", " + this.detalle.numero;
-                      this.numeroItems[0].importe = this.detalle.importeSubTotal
+                    this.conceptoText = this.detalle.proveedorNombreComercial + ", " + this.detalle.numero;
+                    this.numeroItems[0].debe = this.detalle.importeSubTotal
                 })
                 .catch((e) => console.log(e));
         },
