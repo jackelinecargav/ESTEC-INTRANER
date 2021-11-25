@@ -41,7 +41,7 @@
                     </td>
                     <td width="10%">Centro de Costos</td>
                     <td width="15%">
-                        <el-input type="number" maxlength="3" class="input" v-model="item.costo"></el-input>
+                        <el-input type="number" maxlength="3" class="input" v-model="item.cc"></el-input>
                     </td>
                     <td width="10%">Importe</td>
                     <td width="15%">
@@ -141,10 +141,10 @@ export default {
         };
     },
     created() {
-        this.numeroItems[0].costo=100
-      var fechahoy= new Date()
-      var mes = parseInt(fechahoy.getMonth())+1
-      this.fechaActual = fechahoy.getUTCDate()+"/"+mes+"/"+fechahoy.getFullYear()
+        this.numeroItems[0].cc=100
+        var fechahoy= new Date()
+        var mes = parseInt(fechahoy.getMonth())+1
+        this.fechaActual = fechahoy.getUTCDate()+"/"+mes+"/"+fechahoy.getFullYear()
         this.consultar();
         this.obtenerCatalogoDetracciones();
     },
@@ -310,10 +310,9 @@ export default {
             asientoData.afectoTipoComprobante = this.detalle.id007TipoComprobante
             asientoData.afectoIgv = this.igvAfecto
             asientoData.idTipoComporbante = this.detalle.id007TipoComprobante
-            asientoData.idTipoComporbante = this.detalle.proveedorNumeroDocumento
+            asientoData.ruc = this.detalle.proveedorNumeroDocumento
             asientoData.afectoDetraccion= this.detraccion
             asientoData.listAsientoDetalle = this.numeroItems
-            console.log(asientoData)
             axios.post(constantes.rutaAdmin + "/provisionar-asiento", asientoData).then(response=>{
               console.log(response)
               this.idAsiento = response.result
