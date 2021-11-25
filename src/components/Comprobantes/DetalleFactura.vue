@@ -823,13 +823,13 @@
                                         <el-button type="primary" @click="IngresarObservacion = true">Si</el-button>
                                     </span>
                                 </el-dialog>
-                                <el-dialog title="Observación" :visible.sync="IngresarObservacion" width="20%">
+                                <!-- <el-dialog title="Observación" :visible.sync="IngresarObservacion" width="20%">
                                     <el-input type="textarea" autosize v-model="observacion">
                                     </el-input>
                                     <span slot="footer" class="dialog-footer">
                                         <el-button type="primary" @click="Rechazar()">Guardar</el-button>
                                     </span>
-                                </el-dialog>                                
+                                </el-dialog>                                 -->
                             </el-tab-pane>
                             <el-tab-pane label="Contabilización" name="second" :disabled="mostrarContabilidad">
                                 <Contabilizacion/>
@@ -951,7 +951,7 @@ export default {
                 })
                 .then((response) => {
                     this.detalle = response.data.result[0];
-                    if (this.detalle.id004Estado == 11 || this.detalle.id004Estado == 9) this.mostrarContabilidad = true;
+                    if (this.detalle.id004Estado != 10) this.mostrarContabilidad = true;
                     this.tituloComprobante = (this.detalle.id007TipoComprobante == 26) ? "Recibo" : "Factura";
                     this.conceptoText =
                         this.detalle.proveedorNombreComercial + ", " + this.detalle.numero;
@@ -998,10 +998,16 @@ export default {
                 .catch((e) => console.log(e));
         },
         Accion() {
-            if (this.accionEstadoBoton == 1) {
-                this.Aprobar()
-            } else if (this.accionEstadoBoton == 0) {
-                this.Rechazar()
+            if (this.observacion == null || this.observacion.length == 0) {
+                this.dialogEstado = false;
+                // this. = false;
+                this.$swal.fire("", "Debe ingresar un comentario", "info")
+            } else {
+                if (this.accionEstadoBoton == 1) {
+                    this.Aprobar()
+                } else if (this.accionEstadoBoton == 0) {
+                    this.Rechazar()
+                }
             }
         },
         Aprobar() {

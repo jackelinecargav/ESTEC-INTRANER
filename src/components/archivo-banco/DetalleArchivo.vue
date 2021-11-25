@@ -41,7 +41,7 @@
             <el-button
               type="primary"
               style="width: 100%; "
-              @click="mostrarPopup = true"
+              @click="generarArchivo()"
               >Generar Archivo</el-button
             >
           </el-col>
@@ -162,6 +162,10 @@ export default {
     this.buscarArchivos()
   },
   methods: {
+    generarArchivo(val) {
+      let url = `http://localhost:8991/api/admin/generar-archivo?archivoSolicitud=${this.$route.params.idArchivo}`;
+      window.open(url, "_blank");
+    },
     obtenerPendientes() {
       console.log("Nuevo log");
     },

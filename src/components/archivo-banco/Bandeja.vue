@@ -58,7 +58,7 @@
               <th width="20%" class="text-center">Usuario</th>
               <th width="10%" class="text-center">Estado</th>
               <th width="10%" class="text-center"></th>
-              <!-- <th class="text-center" width="7%"></th> -->
+              <th class="text-center" width="7%"></th>
             </tr>
           </thead>
           <tbody>
@@ -97,7 +97,11 @@
                   >
                 </template>
                 <template></template>
-                <template></template>
+              </td>
+              <td>
+                <template>
+                  <el-button style="width: 100%" type="primary" @click="mostrarPopupFinal=true" >Adjuntar</el-button>
+                </template>
               </td>
             </tr>
           </tbody>
@@ -109,6 +113,24 @@
         width="60%"
       >
         <nuevo @show="mostrarPopup = false"></nuevo>
+      </el-dialog>
+      <el-dialog
+        :visible.sync="mostrarPopupFinal"
+        title="Cargar archivo de respuesta"
+        width="60%"
+      >
+        <el-upload
+  class="upload-demo"
+  action="https://jsonplaceholder.typicode.com/posts/"
+  :on-preview="handlePreview"
+  :on-remove="handleRemove"
+  multiple
+  :limit="3"
+  :on-exceed="handleExceed"
+  :file-list="fileList">
+  <el-button size="small" type="primary">Clic para subir archivo</el-button>
+  <div slot="tip" class="el-upload__tip">Solo archivos jpg/png con un tamaño menor de 500kb</div>
+</el-upload>
       </el-dialog>
     </div>
   </div>
@@ -137,6 +159,7 @@ export default {
       fechaFin: null,
       Estado: null,
       mostrarPopup: false,
+      mostrarPopupFinal: false,
       listaArchivos: [
       ],
       options: [

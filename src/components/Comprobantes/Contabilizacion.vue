@@ -228,7 +228,7 @@ export default {
                  this.obtenerpdf(this.idAsiento)   
                 }
             }else{
-                alert(this.idAsiento)
+                // alert(this.idAsiento)
                if(this.idAsiento != null || this.idAsiento != undefined){
                 this.cambiarEstadoComprobante()
                 this.$swal({
@@ -246,7 +246,6 @@ export default {
                }}   
         },
         cambiarEstadoComprobante(){
-            alert(this.idAsiento)
              let url = constantes.rutaAdmin + "/estado-factura";
             axios
                 .get(url, {
@@ -276,9 +275,9 @@ export default {
                 })
                 .then((response) => {
                     console.warn(response)
-                    alert(response.data.result[0].id_comprobante)
+                    // alert(response.data.result[0].id_comprobante)
                     this.idAsiento = response.data.result[0].id_comprobante
-                    alert(this.idAsiento + "consulta" +response)
+                    // alert(this.idAsiento + "consulta" +response)
                 })
                 .catch((e) => console.log(e));
         },

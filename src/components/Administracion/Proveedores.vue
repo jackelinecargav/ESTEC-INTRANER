@@ -226,10 +226,10 @@ export default {
         validarCampoVacio() {
             if (!this.observacion) {
                 // this.modal("info", "Debe ingresar un motivos", "")
-                alert("Debe ingresar un motivo");
+                // alert("Debe ingresar un motivo");
                 return;
             } else if (this.observacion.length < 3) {
-                alert("Debe ingresar un motivo");
+                // alert("Debe ingresar un motivo");
                 // this.modal("info", "Debe ingresar un motivos", "")
                 return;
             } else {
