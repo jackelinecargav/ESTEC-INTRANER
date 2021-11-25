@@ -34,10 +34,10 @@
     <div>
         <table id="example2" class="table" width="95%" height="95%">
             <tbody>
-                <tr v-for="item of numeroItems" :key="'Gasto ' + item.numeros">
-                    <td width="10%">Cta.Contable {{ item.numeros }}</td>
+                <tr v-for="item of numeroItems" :key="'Gasto ' + item.orden">
+                    <td width="10%">Cta.Contable {{ item.orden }}</td>
                     <td width="15%">
-                        <el-input type="number" maxlength="12" class="input" v-model="item.ctaContable"></el-input>
+                        <el-input type="number" maxlength="12" class="input" v-model="item.id_asiento_regla"></el-input>
                     </td>
                     <td width="10%">Centro de Costos</td>
                     <td width="15%">
@@ -45,7 +45,7 @@
                     </td>
                     <td width="10%">Importe</td>
                     <td width="15%">
-                        <el-input type="number" class="input" v-model="item.importe" :disabled="distriGasto"></el-input>
+                        <el-input type="number" class="input" v-model="item.debe" :disabled="distriGasto"></el-input>
                     </td>
 
                     <td width="10%" v-if="distriGasto == false"><u style="font-size: 20px" @click="agregarItem()">+</u></td>
@@ -106,10 +106,10 @@ export default {
             porcentajeDetraccion: null,
 
             numeroItems: [{
-                numeros: 1,
-                importe: null,
-                ctaContable: null,
-                costo: null
+                orden: 1,
+                cc: null,
+                id_asiento_regla: null,
+                debe: null
             }],
             fechaActual:null,
             activeName: "first",
@@ -209,10 +209,9 @@ export default {
       },
         agregarItem() {
             this.numeroItems.push({
-                numeros: this.numeroItems.length + 1,
-                importe: null,
-                cc: null,
-                costo: null
+                orden: this.numeroItems.length + 1,
+                debe: null,
+                cc: null
             })
         },
         handleClick(tab, event) {
@@ -240,12 +239,12 @@ export default {
         },
         validaciones(valor){
             if(valor==2){
+                console.log("no borrar" + this.idAsientoProvision)
                 if(this.idAsientoProvision != null || this.idAsientoProvision != undefined){
-                this.obtenerpdf(this.idAsientoProvision) 
+                this.obtenerpdf(this.idAsientoProvision)
                 }else {
                 this.grabar()
                 this.obtenerpdf(this.idAsientoProvision)
-                  
                 }
             }else{
                if(this.idAsientoProvision != null || this.idAsientoProvision != undefined){
@@ -291,7 +290,8 @@ export default {
                     },
                 })
                 .then((response) => {
-                    this.idAsientoProvision = response.data.result[0].id_asiento_provision
+                console.warn(response)
+                this.idAsientoProvision = response.data.result[0].id_asiento_provision
                 })
                 .catch((e) => console.log(e));
         return this.idAsiento
@@ -309,7 +309,11 @@ export default {
             asientoData.estado= 2
             asientoData.afectoTipoComprobante = this.detalle.id007TipoComprobante
             asientoData.afectoIgv = this.igvAfecto
+            asientoData.idTipoComporbante = this.detalle.id007TipoComprobante
+            asientoData.idTipoComporbante = this.detalle.proveedorNumeroDocumento
             asientoData.afectoDetraccion= this.detraccion
+            asientoData.listAsientoDetalle = this.numeroItems
+            console.log(asientoData)
             axios.post(constantes.rutaAdmin + "/provisionar-asiento", asientoData).then(response=>{
               console.log(response)
               this.idAsiento = response.result
@@ -338,9 +342,8 @@ export default {
                 .then((response) => {
                     this.detalle = response.data.result[0];
                     console.warn(this.detalle)
-                    this.conceptoText =
-                    this.detalle.proveedorNombreComercial + ", " + this.detalle.numero;
-                    this.numeroItems[0].importe = this.detalle.importeSubTotal
+                    this.conceptoText = this.detalle.proveedorNombreComercial + ", " + this.detalle.numero;
+                    this.numeroItems[0].debe = this.detalle.importeSubTotal
                 })
                 .catch((e) => console.log(e));
         },
