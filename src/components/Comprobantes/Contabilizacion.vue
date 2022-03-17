@@ -7,17 +7,17 @@
         Concepto: 
       </el-col>
       <el-col :xs="24" :md="19">
-        <el-input v-model="conceptoText" maxlength="250" disabled></el-input>
+        <el-input v-model="conceptoText" maxlength="250" ></el-input>
       </el-col>
     </el-row><br>
     <el-row :gutter="10">
         <el-col :xs="24" :md="3">
-            <el-checkbox v-model="detraccion">Detracción :</el-checkbox>
+            <el-checkbox v-model="detraccion" :disabled="reciboHonorarios">Detracción :</el-checkbox>
         </el-col>
         <el-col :xs="24" :md="8">
                 <el-select v-model="porcentajeDetraccion" placeholder="Selecione" :disabled="!detraccion">
                     <el-option v-for="item in catalogDetracciones" :key="item.idDetraccion" 
-                    :label="item.tclave" :value="item.idDetraccion">
+                    :label="item.tdescri+' - '+ item.tclave" :value="item.idDetraccion">
                     </el-option>
                 </el-select>
         </el-col>
@@ -37,10 +37,20 @@
                 <tr v-for="item of numeroItems" :key="'Gasto ' + item.orden">
                     <td width="10%">Cta.Contable {{ item.orden }}</td>
                     <td width="15%">
+                        <!-- <el-select v-model="item.pcuenta" placeholder="Selecione" >
+                            <el-option v-for="item in cuentasContablesData" :key="item" 
+                            :label="item.pcuenta+' - '+ item.pdescri" :value="item.pcuenta">
+                            </el-option>
+                        </el-select> -->
                         <el-input type="number" maxlength="12" class="input" v-model="item.id_asiento_regla"></el-input>
                     </td>
                     <td width="10%">Centro de Costos</td>
                     <td width="15%">
+                        <!-- <el-select v-model="item.cc" placeholder="Selecione" >
+                            <el-option v-for="item in centroCostosData" :key="item.indice" 
+                            :label="item.tt_FACTOR" :value="item.tt_FACTOR">
+                            </el-option>
+                        </el-select> -->
                         <el-input type="number" maxlength="3" class="input" v-model="item.cc"></el-input>
                     </td>
                     <td width="10%">Importe</td>
@@ -108,7 +118,7 @@ export default {
             numeroItems: [{
                 orden: 1,
                 cc: null,
-                id_asiento_regla: null,
+                id_asiento_provision: null,
                 debe: null
             }],
             fechaActual:null,
@@ -137,7 +147,10 @@ export default {
             idComprobante: null,
             igvAfecto: true,
             idAsientoProvision:null,
-            importeSinDetraccion:null
+            importeSinDetraccion:null,
+            reciboHonorarios:false,
+            cuentasContablesData:null,
+            centroCostosData:null,
         };
     },
     created() {
@@ -147,8 +160,43 @@ export default {
         this.fechaActual = fechahoy.getUTCDate()+"/"+mes+"/"+fechahoy.getFullYear()
         this.consultar();
         this.obtenerCatalogoDetracciones();
+        this.cuentascontables();
+        this.centrocostos();
     },
     methods: {
+    centrocostos(){
+     let url = constantes.rutaAdmin + "/centro-costos"
+                axios
+                    .get(url, {
+                        params: {
+                            centroCosto: null
+                        },
+                    })
+                    .then((response) => {
+                        this.centroCostosData = response.data.result
+                    })
+                    .catch((e) => {
+                        console.log(e);
+
+                    });
+
+    },
+    cuentascontables(){
+    let url = constantes.rutaAdmin + "/cuentas-contables"
+                axios
+                    .get(url, {
+                        params: {
+                            pvnivel: "cuentas"
+                        },
+                    })
+                    .then((response) => {
+                        this.cuentasContablesData = response.data.result
+                    })
+                    .catch((e) => {
+                        console.log(e);
+
+                    });
+    },
       GrabarObservar(){
             let url = constantes.rutaAdmin + "/consulta-traza-observacion"
             axios
@@ -309,6 +357,7 @@ export default {
             asientoData.estado= 2
             asientoData.afectoTipoComprobante = this.detalle.id007TipoComprobante
             asientoData.afectoIgv = this.igvAfecto
+            asientoData.montoIgv= this.detalle.importeIgv
             asientoData.idTipoComporbante = this.detalle.id007TipoComprobante
             asientoData.ruc = this.detalle.proveedorNumeroDocumento
             asientoData.afectoDetraccion= this.detraccion
@@ -343,6 +392,9 @@ export default {
                     console.warn(this.detalle)
                     this.conceptoText = this.detalle.proveedorNombreComercial + ", " + this.detalle.numero;
                     this.numeroItems[0].debe = this.detalle.importeSubTotal
+                    if( this.detalle.id007TipoComprobante == 26){
+                        this.reciboHonorarios = true
+                    }
                 })
                 .catch((e) => console.log(e));
         },
